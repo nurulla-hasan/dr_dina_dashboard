@@ -4,8 +4,8 @@ import {
   type Subscription,
 } from "@/components/management/subscriptions/subscriptions-columns";
 import { SubscriptionsFilter } from "@/components/management/subscriptions/subscriptions-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const Subscriptions = () => {
   return (

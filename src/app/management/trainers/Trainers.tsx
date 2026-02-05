@@ -4,8 +4,8 @@ import {
   type Trainer,
 } from "@/components/management/trainers/trainers-columns";
 import { TrainersFilter } from "@/components/management/trainers/trainers-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const trainers: Trainer[] = [
   {

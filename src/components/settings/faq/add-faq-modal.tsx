@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ModalWrapper } from "@/components/ui/modal-wrapper";
+import { ModalWrapper } from "@/components/ui/custom/modal-wrapper";
 import {
   Form,
   FormControl,

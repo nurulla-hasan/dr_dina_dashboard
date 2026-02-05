@@ -4,8 +4,8 @@ import {
   type Program,
 } from "@/components/management/programs/programs-columns";
 import { ProgramsFilter } from "@/components/management/programs/programs-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const programs: Program[] = [
   { id: 1, trainerName: "Jollof Rice", programName: "Strength Training Basics", price: "$299", views: "1.5k", status: "Approved" },

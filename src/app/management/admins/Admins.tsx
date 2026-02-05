@@ -4,8 +4,8 @@ import {
   type Admin,
 } from "@/components/management/admins/admins-columns";
 import { AdminsFilter } from "@/components/management/admins/admins-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const admins: Admin[] = [
   {

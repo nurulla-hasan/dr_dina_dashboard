@@ -1,8 +1,8 @@
 import PageLayout from "@/components/common/page-layout";
 import { gymsColumns, type Gym } from "@/components/management/gyms/gyms-columns";
 import { GymsFilter } from "@/components/management/gyms/gyms-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const gyms: Gym[] = [
   { id: 1, name: "Jollof Rice", location: "29321 Mohamed Springs", views: "1.5k", status: "Active" },

@@ -1,8 +1,8 @@
 import PageLayout from "@/components/common/page-layout";
 import { faqColumns, type FAQ } from "@/components/settings/faq/faq-columns";
 import { FAQFilter } from "@/components/settings/faq/faq-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const faqs: FAQ[] = [
   {

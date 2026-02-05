@@ -4,8 +4,8 @@ import {
   type Review,
 } from "@/components/management/reviews/reviews-columns";
 import { ReviewsFilter } from "@/components/management/reviews/reviews-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const Reviews = () => {
   return (

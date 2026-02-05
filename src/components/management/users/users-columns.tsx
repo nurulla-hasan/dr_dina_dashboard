@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ColumnDef } from "@tanstack/react-table";
-import { Trash2, Ban } from "lucide-react";
+import { Ban } from "lucide-react";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import UserViewModal from "./view-modal";
 
 export type User = {
   id: number;
@@ -18,30 +16,12 @@ export type User = {
 
 export const usersColumns: ColumnDef<User>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <label className="flex items-center gap-2 cursor-pointer select-none">
-        <span className="font-semibold">
-          Select All
-        </span>
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: boolean) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
-        />
-      </label>
-    ),
+    header: "SL",
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <span className="text-sm font-medium text-foreground">
+        {row.index + 1}
+      </span>
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: "name",
@@ -97,23 +77,15 @@ export const usersColumns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    header: () => <div className="text-right pr-8">Actions</div>,
+    header: () => <div className="text-right">Actions</div>,
     cell: () => (
       <div className="flex items-center justify-end gap-1">
-        <UserViewModal />
         <Button
-          variant="outline"
-          size="icon"
-          className="text-amber-500 hover:text-amber-600"
+          variant="ghost"
+          size="icon-sm"
+          className="text-destructive"
         >
           <Ban />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="text-red-500 hover:text-red-600"
-        >
-          <Trash2 />
         </Button>
       </div>
     ),

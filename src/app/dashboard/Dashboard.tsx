@@ -2,7 +2,7 @@ import PageLayout from "@/components/common/page-layout";
 import Stats from "@/components/dashboard/stats";
 import EarningGrowthChart from "@/components/dashboard/earning-growth";
 import UserGrowthChart from "@/components/dashboard/user-growth";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/custom/data-table";
 import { usersColumns, type User } from "@/components/management/users/users-columns";
 
 const Dashboard = () => {

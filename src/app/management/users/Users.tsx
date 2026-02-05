@@ -4,8 +4,8 @@ import {
   type User,
 } from "@/components/management/users/users-columns";
 import { UsersFilter } from "@/components/management/users/users-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const users: User[] = [
   {

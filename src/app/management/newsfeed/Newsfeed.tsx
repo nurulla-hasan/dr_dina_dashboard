@@ -4,8 +4,8 @@ import {
   type NewsfeedItem,
 } from "@/components/management/newsfeed/newsfeed-columns";
 import { NewsfeedFilter } from "@/components/management/newsfeed/newsfeed-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const newsfeed: NewsfeedItem[] = [
   {

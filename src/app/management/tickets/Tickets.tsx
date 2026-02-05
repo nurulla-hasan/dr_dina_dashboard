@@ -4,8 +4,8 @@ import {
   type Ticket,
 } from "@/components/management/tickets/tickets-columns";
 import { TicketsFilter } from "@/components/management/tickets/tickets-filter";
-import { DataTable } from "@/components/ui/data-table";
-import PageHeader from "@/components/ui/page-header";
+import { DataTable } from "@/components/ui/custom/data-table";
+import PageHeader from "@/components/ui/custom/page-header";
 
 const tickets: Ticket[] = [
   {

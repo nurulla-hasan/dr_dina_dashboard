@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ScrollArea, ScrollBar } from "./scroll-area";
+import { ScrollArea, ScrollBar } from "../scroll-area";
 import { DataTablePagination } from "./data-table-pagination";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
