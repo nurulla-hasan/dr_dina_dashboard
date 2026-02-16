@@ -29,6 +29,7 @@ import { Button } from "../ui/button";
 
 const MAIN_NAV_ITEMS = [
   { name: "Overview", icon: LayoutGrid, href: "/" },
+  { name: "Users", icon: User, href: "/users" },
   { name: "Courses", icon: BookOpen, href: "/courses" },
   { name: "Teacher List", icon: User, href: "/teachers" },
   { name: "Assistance List", icon: Handshake, href: "/assistance" },

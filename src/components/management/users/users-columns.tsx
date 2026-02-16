@@ -1,34 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ColumnDef } from "@tanstack/react-table";
-import { Ban } from "lucide-react";
+import { format } from "date-fns";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import type { TUser } from "@/types/user.type";
+import { UserAction } from "./user-action";
 
-export type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: "Trainer" | "Individual";
-  status: "Approved" | "Decline";
-  joinedDate: string;
-};
-
-export const usersColumns: ColumnDef<User>[] = [
+export const usersColumns: ColumnDef<TUser>[] = [
   {
     header: "SL",
-    cell: ({ row }) => (
-      <span className="text-sm font-medium text-foreground">
-        {row.index + 1}
-      </span>
-    ),
+    cell: ({ row, table }) => {
+      const { pageIndex, pageSize } = table.getState().pagination;
+      return (
+        <span className="text-sm font-medium text-foreground">
+          {pageIndex * pageSize + row.index + 1}
+        </span>
+      );
+    },
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: "User Name",
     cell: ({ row }) => (
       <span className="text-sm font-medium text-foreground">
-        {row.original.name}
+        {row.original.fullName}
       </span>
     ),
   },
@@ -42,11 +37,11 @@ export const usersColumns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "joinedDate",
+    accessorKey: "createdAt",
     header: "Joined Date",
     cell: ({ row }) => (
       <span className="text-sm text-muted-foreground">
-        {row.original.joinedDate}
+        {row.original.createdAt ? format(new Date(row.original.createdAt), "dd MMM yyyy") : "N/A"}
       </span>
     ),
   },
@@ -56,7 +51,7 @@ export const usersColumns: ColumnDef<User>[] = [
     cell: ({ row }) => (
       <Badge
         variant="outline"
-        className="rounded-full px-3 py-1 text-xs font-normal bg-primary/10 border-primary/40 text-primary"
+        className="rounded-full px-3 py-1 text-xs font-normal bg-primary/10 border-primary/40 text-primary capitalize"
       >
         {row.original.role}
       </Badge>
@@ -66,11 +61,14 @@ export const usersColumns: ColumnDef<User>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const approved = row.original.status === "Approved";
-      const variant = approved ? "success" : "destructive";
+      const status = row.original.status;
+      let variant = "default";
+      if (status === "in-progress" || status === "Approved") variant = "success";
+      if (status === "blocked" || status === "Decline") variant = "destructive";
+      
       return (
-        <Badge variant={variant as any} className="rounded-full px-3 py-1">
-          {row.original.status}
+        <Badge variant={variant as any} className="rounded-full px-3 py-1 capitalize">
+          {status}
         </Badge>
       );
     },
@@ -78,17 +76,7 @@ export const usersColumns: ColumnDef<User>[] = [
   {
     id: "actions",
     header: () => <div className="text-right">Actions</div>,
-    cell: () => (
-      <div className="flex items-center justify-end gap-1">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="text-destructive"
-        >
-          <Ban />
-        </Button>
-      </div>
-    ),
+    cell: ({ row }) => <UserAction user={row.original} />,
     enableSorting: false,
     enableHiding: false,
   },

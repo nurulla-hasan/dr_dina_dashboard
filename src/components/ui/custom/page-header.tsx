@@ -2,7 +2,7 @@
 
 const PageHeader = ({ title, description, length }: { title: string, description: string, length?: number }) => {
     return (
-        <div className="flex flex-col gap-1.5 pb-6">
+        <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
                 {length && (

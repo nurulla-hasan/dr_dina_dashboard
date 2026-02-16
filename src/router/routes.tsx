@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
             { index: true, element: <Dashboard /> },
 
             // Management
-            { path: "management/users", element: <Users /> },
+            { path: "users", element: <Users /> },
             { path: "management/admins", element: <Admins /> },
             { path: "management/trainers", element: <Trainers /> },
             { path: "management/programs", element: <Programs /> },

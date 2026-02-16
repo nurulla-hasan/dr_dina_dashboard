@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -69,4 +70,18 @@ export const generateSlug = (title: string) => {
     .replace(/[^\w\s-]/g, "") // Remove special chars
     .replace(/[\s_-]+/g, "-") // Replace spaces/underscores with -
     .replace(/^-+|-+$/g, ""); // Always remove leading and trailing hyphens
+};
+
+export const buildQueryParams = (query: Record<string, any>) => {
+  const params = new URLSearchParams();
+
+  if (query) {
+    Object.keys(query).forEach((key) => {
+      if (query[key] !== undefined && query[key] !== null && query[key] !== "") {
+        params.append(key, query[key]);
+      }
+    });
+  }
+
+  return params;
 };

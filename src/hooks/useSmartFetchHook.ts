@@ -1,14 +1,19 @@
-import { useState, useEffect, useMemo, useTransition, useCallback } from 'react';
+import { useState, useMemo, useTransition, useCallback, useEffect } from 'react';
 
 // Generic API list response shape
 export type ApiListResponse<T> = {
-  data?: T[];
-  meta?: {
-    page?: number;
-    limit?: number;
-    total?: number;
-    totalPage?: number;
-    [k: string]: unknown;
+  success: boolean;
+  message: string;
+  statusCode: number;
+  data?: {
+    meta?: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPage: number;
+      [k: string]: unknown;
+    };
+    result?: T[];
   };
 };
 
@@ -24,23 +29,18 @@ function useInternalDebounce<T>(value: T, delay = 400): T {
   return debounced;
 }
 
-type BaseParams = { page?: number; limit?: number; searchTerm?: string };
+type BaseParams = { page?: number; limit?: number; };
 
 // The hook returned values
 export type UseSmartFetchReturn<P extends BaseParams, T> = {
-  searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  pageSize: number;
-  setPageSize: React.Dispatch<React.SetStateAction<number>>;
   data: T[];
-  meta: ApiListResponse<T>["meta"];
+  meta: NonNullable<ApiListResponse<T>["data"]>["meta"];
   isLoading: boolean;
   isPending: boolean;
   isError: boolean;
-  filterParams: Partial<P>;
-  setFilterParams: React.Dispatch<React.SetStateAction<Partial<P>>>;
+  filter: Partial<P>;
+  setFilter: React.Dispatch<React.SetStateAction<Partial<P>>>;
+  setPage: (page: number) => void;
   resetFilters: () => void;
 };
 
@@ -57,66 +57,52 @@ const useSmartFetchHook = <P extends BaseParams, T>(
   options: Partial<P> = {} as Partial<P>,
   initialParams: Partial<P> = {} as Partial<P>
 ): UseSmartFetchReturn<P, T> => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(options.limit || 10);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filterParams, setFilterParams] = useState<Partial<P>>(initialParams);
+  // Merged state for simpler management
+  const [filter, setFilter] = useState<Partial<P>>({
+    page: 1,
+    limit: options.limit || 10,
+    ...initialParams,
+    ...options
+  });
   
   // React 19 transition for non-blocking state updates
   const [isPending, startTransition] = useTransition();
 
-  // Debounce search term and filter params
-  const debouncedSearchTerm = useInternalDebounce<string>(searchTerm);
-  const debouncedFilterParams = useInternalDebounce<Partial<P>>(filterParams);
-
-  // Memoize query parameters to avoid unnecessary re-renders
-  const queryParams = useMemo(() => {
-    return {
-      page: currentPage,
-      limit: pageSize,
-      searchTerm: debouncedSearchTerm,
-      ...debouncedFilterParams,
-      ...options,
-    } as P;
-  }, [currentPage, pageSize, debouncedSearchTerm, debouncedFilterParams, options]);
+  // Debounce filter params to prevent excessive API calls
+  const debouncedFilter = useInternalDebounce<Partial<P>>(filter);
 
   // Execute the query hook
-  const { data, isLoading, isError } = queryHook(queryParams);
+  const { data, isLoading, isError } = queryHook(debouncedFilter as P);
 
-  // React 19 best practice: Reset page to 1 when filters or search change
-  // Wrapping in startTransition to keep the UI responsive
-  useEffect(() => {
-    startTransition(() => {
-      setCurrentPage(1);
-    });
-  }, [debouncedSearchTerm, debouncedFilterParams]);
+  // Helper to set current page safely
+  const setPage = useCallback((page: number) => {
+    setFilter(prev => ({ ...prev, page }));
+  }, []);
 
-  // Reset all filters and search
+  // Reset all filters
   const resetFilters = useCallback(() => {
     startTransition(() => {
-      setSearchTerm('');
-      setFilterParams(initialParams);
-      setCurrentPage(1);
+      setFilter({
+        page: 1,
+        limit: options.limit || 10,
+        ...initialParams,
+        ...options
+      });
     });
-  }, [initialParams]);
+  }, [initialParams, options]);
 
-  const list = useMemo(() => data?.data ?? [], [data?.data]);
-  const meta = data?.meta;
+  const list = useMemo(() => data?.data?.result ?? [], [data?.data?.result]);
+  const meta = data?.data?.meta;
 
   return {
-    searchTerm,
-    setSearchTerm,
-    currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     data: list,
     meta,
     isLoading,
     isPending,
     isError,
-    filterParams,
-    setFilterParams,
+    setPage,
+    filter,
+    setFilter,
     resetFilters,
   };
 };

@@ -1,116 +1,43 @@
 import PageLayout from "@/components/common/page-layout";
-import {
-  usersColumns,
-  type User,
-} from "@/components/management/users/users-columns";
+import { usersColumns } from "@/components/management/users/users-columns";
 import { UsersFilter } from "@/components/management/users/users-filter";
 import { DataTable } from "@/components/ui/custom/data-table";
 import PageHeader from "@/components/ui/custom/page-header";
-
-const users: User[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    role: "Trainer",
-    status: "Approved",
-    joinedDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    role: "Individual",
-    status: "Decline",
-    joinedDate: "2024-01-16",
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    email: "michael.johnson@example.com",
-    role: "Trainer",
-    status: "Decline",
-    joinedDate: "2024-01-17",
-  },
-  {
-    id: 4,
-    name: "Emily Brown",
-    email: "emily.brown@example.com",
-    role: "Individual",
-    status: "Approved",
-    joinedDate: "2024-01-18",
-  },
-  {
-    id: 5,
-    name: "David Wilson",
-    email: "david.wilson@example.com",
-    role: "Individual",
-    status: "Approved",
-    joinedDate: "2024-01-19",
-  },
-  {
-    id: 6,
-    name: "Sophia Taylor",
-    email: "sophia.taylor@example.com",
-    role: "Trainer",
-    status: "Decline",
-    joinedDate: "2024-01-20",
-  },
-  {
-    id: 7,
-    name: "Daniel Anderson",
-    email: "daniel.anderson@example.com",
-    role: "Individual",
-    status: "Approved",
-    joinedDate: "2024-01-21",
-  },
-  {
-    id: 8,
-    name: "Olivia Martinez",
-    email: "olivia.martinez@example.com",
-    role: "Individual",
-    status: "Approved",
-    joinedDate: "2024-01-22",
-  },
-  {
-    id: 9,
-    name: "James Wilson",
-    email: "james.wilson@example.com",
-    role: "Individual",
-    status: "Approved",
-    joinedDate: "2024-01-23",
-  },
-  {
-    id: 10,
-    name: "William Davis",
-    email: "william.davis@example.com",
-    role: "Individual",
-    status: "Approved",
-    joinedDate: "2024-01-24",
-  },
-];
-
-const meta = {
-  total: users.length,
-  page: 1,
-  limit: 10,
-  totalPages: 4,
-};
+import useSmartFetchHook from "@/hooks/useSmartFetchHook";
+import { useGetAllUsersQuery } from "@/redux/feature/user/userApis";
+import type { TUser } from "@/types/user.type";
 
 const Users = () => {
+  const {
+    data,
+    meta,
+    isLoading,
+    isError,
+    filter,
+    setFilter,
+    setPage,
+  } = useSmartFetchHook<{ page: number; limit: number; search: string }, TUser>(useGetAllUsersQuery);
+
   return (
     <PageLayout>
       <div className="flex flex-col md:flex-row md:justify-between gap-2">
         <PageHeader
           title="User Management"
           description="User all Platform Users"
-          length={users.length}
+          length={meta?.total || 0}
         />
 
-        <UsersFilter />
+        <UsersFilter filter={filter} setFilter={setFilter} />
       </div>
 
-      <DataTable columns={usersColumns} data={users} meta={meta} />
+      <DataTable
+        columns={usersColumns}
+        data={data || []}
+        meta={meta}
+        onPageChange={setPage}
+        isLoading={isLoading}
+        isError={isError}
+      />
     </PageLayout>
   );
 };
