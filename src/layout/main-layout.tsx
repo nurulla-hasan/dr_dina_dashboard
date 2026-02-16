@@ -9,13 +9,13 @@ const MainLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <div className="flex h-screen overflow-hidden bg-sidebar">
+        <div className="flex h-screen overflow-hidden">
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <div className="flex-1 flex flex-col relative lg:pl-64 h-screen overflow-hidden">
                 <Topbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
                 <div className="flex-1 min-h-0 mt-20">
                     <ScrollArea
-                        className="h-full p-4 bg-card lg:rounded-tl-2xl"
+                        className="h-full p-4"
                         onClick={() => isSidebarOpen && setIsSidebarOpen(false)}>
                         <div className="min-h-full">
                             <Outlet />

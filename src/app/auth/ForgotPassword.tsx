@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 // import { forgotPassword } from "@/services/auth";
 // import { SuccessToast, ErrorToast } from "@/lib/utils";
 
@@ -59,49 +58,59 @@ export default function ForgotPassword() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">Forgot Password?</CardTitle>
-        <CardDescription className="text-center">
-          Enter your email address and we&apos;ll send you a link to reset your password
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+    <div className="flex h-screen w-full items-center justify-center bg-background">
+      <div className="flex w-full max-w-225 items-center justify-center gap-16 p-4">
+        <div className="hidden w-1/2 items-center justify-center border-r border-gray-200 pr-16 md:flex">
+          <img
+            src="/auth/forgot-password.png"
+            alt="Forgot Password Illustration"
+            className="max-w-75 object-contain"
+          />
+        </div>
+        <div className="w-full max-w-100">
+          <div className="mb-6 space-y-2">
+            <h1 className="text-2xl font-bold text-[#2e4053]">Forgot Password?</h1>
+            <p className="text-sm text-muted-foreground">
+              Enter your email address and we&apos;ll send you a link to reset your password.
+            </p>
+          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-foreground">Email</FormLabel>
+                    <FormControl>
                       <Input
                         placeholder="name@example.com"
                         type="email"
-                        className="pl-10"
+                        className="bg-gray-50 border-gray-200"
                         {...field}
                       />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              Send Reset Link
-            </Button>
-            <Link to="/auth/login">
-              <Button variant="ghost" className="w-full">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Login
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className="w-full bg-[#b49b6a] text-white hover:bg-[#a38b5e]"
+                disabled={isLoading}
+              >
+                Send Reset Link
               </Button>
-            </Link>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              <Link to="/auth/login">
+                <Button variant="ghost" className="w-full text-muted-foreground hover:text-foreground">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to Login
+                </Button>
+              </Link>
+            </form>
+          </Form>
+        </div>
+      </div>
+    </div>
   )
 }

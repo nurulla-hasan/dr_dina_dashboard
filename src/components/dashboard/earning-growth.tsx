@@ -1,5 +1,4 @@
-
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 import {
   Card,
@@ -8,78 +7,103 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 
 const chartData = [
-  { month: "Jan", earning: 80 },
-  { month: "Feb", earning: 60 },
-  { month: "Mar", earning: 70 },
-  { month: "Apr", earning: 55 },
-  { month: "May", earning: 75 },
-  { month: "Jun", earning: 65 },
-  { month: "Jul", earning: 85 },
-  { month: "Aug", earning: 78 },
+  { month: "Jan", sales: 500 },
+  { month: "Feb", sales: 250 },
+  { month: "Mar", sales: 824 },
+  { month: "Apr", sales: 900 },
+  { month: "May", sales: 850 },
+  { month: "Jun", sales: 880 },
+  { month: "Jul", sales: 900 },
+  { month: "Aug", sales: 500 },
+  { month: "Sep", sales: 250 },
+  { month: "Oct", sales: 850 },
+  { month: "Nov", sales: 900 },
+  { month: "Dec", sales: 850 },
 ];
 
-const chartConfig = {
-  earning: {
-    label: "Earning",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
-const EarningGrowthChart = () => {
+const MonthlySalesChart = () => {
   return (
-    <Card className="border-muted/40">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-medium font-crimson">
-          Earning Growth
-        </CardTitle>
+    <Card className="border-none shadow-sm bg-white dark:bg-sidebar rounded-2xl overflow-hidden">
+      <CardHeader className="flex flex-row items-center justify-between pb-8 border-b border-gray-100 dark:border-gray-800">
+        <div className="space-y-1">
+          <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">
+            Monthly Sales
+          </CardTitle>
+        </div>
+        <Select defaultValue="2025">
+            <SelectTrigger className="w-25 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-1 focus:ring-primary">
+                <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="2025">2025</SelectItem>
+                <SelectItem value="2024">2024</SelectItem>
+                <SelectItem value="2023">2023</SelectItem>
+            </SelectContent>
+        </Select>
       </CardHeader>
-      <CardContent className="pt-2">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-55 w-full"
-        >
-          <AreaChart data={chartData}>
-            <defs>
-              <linearGradient id="earningFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.6} />
-                <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              width={30}
-              tickMargin={4}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dot" />}
-            />
-            <Area
-              type="natural"
-              dataKey="earning"
-              stroke="var(--primary)"
-              fill="url(#earningFill)"
-            />
-          </AreaChart>
-        </ChartContainer>
+      <CardContent className="pt-6 pl-0">
+        <div className="h-100 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} barSize={32}>
+              <defs>
+                <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={1} />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.6} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f3f4f6" />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={12}
+                tick={{ fontSize: 12, fill: "#9ca3af", fontWeight: 500 }}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                width={60}
+                tickMargin={12}
+                tick={{ fontSize: 12, fill: "#9ca3af", fontWeight: 500 }}
+                tickFormatter={(value) => `$${value}`}
+              />
+              <Tooltip
+                  cursor={{ fill: '#f9fafb' }}
+                  content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                      return (
+                          <div className="bg-white dark:bg-gray-800 p-3 border border-gray-100 dark:border-gray-700 shadow-xl rounded-xl">
+                            <p className="text-xs text-gray-500 mb-1 font-medium">{payload[0].payload.month}</p>
+                            <p className="text-lg font-bold text-primary">
+                              ${payload[0].value}k
+                            </p>
+                          </div>
+                      );
+                      }
+                      return null;
+                  }}
+              />
+              <Bar
+                dataKey="sales"
+                fill="url(#salesGradient)"
+                radius={[6, 6, 0, 0]}
+                animationDuration={1500}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
 };
 
-export default EarningGrowthChart;
+export default MonthlySalesChart;

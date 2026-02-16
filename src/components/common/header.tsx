@@ -35,51 +35,40 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   };
 
   return (
-    <header className="fixed top-0 right-0 left-0 lg:left-64 h-20 bg-sidebar text-sidebar-foreground z-30 border-b border-muted/20">
+    <header className="fixed top-0 right-0 left-0 lg:left-64 h-20 bg-primary text-primary-foreground z-30 border-b border-primary/20">
       <div className="relative h-full flex items-center justify-between px-4">
         {/* Left side: mobile menu or spacer */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="lg:hidden text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
             onClick={onMenuClick}
           >
             <Menu />
           </Button>
+          <h1 className="text-xl md:text-2xl font-normal text-primary-foreground">Welcome back!</h1>
         </div>
-
-        {/* Center: logo with notch
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 h-10 lg:h-14 flex items-center justify-center pointer-events-none">
-          <div className="relative w-40 md:w-56 lg:w-70 h-full bg-card notch-shape flex items-center justify-center pointer-events-auto">
-            <div className="flex items-center gap-2 lg:gap-4">
-              <img src="/logo.png" alt="Logo" className="h-7 lg:h-12 w-auto" />
-              <span className="text-sm md:text-xl lg:text-2xl font-medium font-crimson text-foreground">
-                VitaKinetic
-              </span>
-            </div>
-          </div>
-        </div> */}
 
         {/* Right: notification + theme toggle + profile */}
         <div className="flex items-center space-x-3 md:space-x-5">
           {/* Notification icon */}
           <Link to="/notifications">
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon-sm"
-              className="rounded-full relative"
+              className="rounded-full text-primary dark:text-primary-foreground"
             >
               <Bell />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-primary rounded-full border-2 border-sidebar"></span>
+              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border-2 border-primary"></span>
             </Button>
           </Link>
 
           {/* Theme toggle */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon-sm"
-            className="rounded-full hidden lg:flex"
+            className="rounded-full hidden lg:flex text-primary dark:text-primary-foreground"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             aria-label={
               theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
@@ -104,23 +93,23 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
                     </>
                   ) : (
                     <>
-                      <Avatar className="h-10 w-10 border-2 border-muted-foreground/10">
+                      <Avatar className="h-10 w-10 border-2 border-primary-foreground/20">
                         <AvatarImage
                           src={admin?.profile_image}
                           alt={admin?.name || "user"}
                         />
-                        <AvatarFallback className="bg-primary/10 text-primary">
+                        <AvatarFallback className="bg-primary-foreground/10 text-primary-foreground">
                           {getInitials(admin?.name)}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="md:flex flex-col hidden">
+                      <div className="md:flex flex-col hidden text-primary-foreground">
                         <span
-                          className="text-sm font-semibold text-foreground leading-none"
+                          className="text-sm font-semibold leading-none"
                           title={admin?.name || "user"}
                         >
                           {admin?.name || "user"}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-[10px] text-primary-foreground/80">
                           Admin
                         </span>
                       </div>
