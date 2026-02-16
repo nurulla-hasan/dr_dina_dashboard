@@ -12,26 +12,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { useSelector } from "react-redux";
-// import { useGetAdminProfileQuery } from "@/redux/feature/auth/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { Logout } from "@/redux/feature/auth/authSlice";
 import { getInitials } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const FALLBACK_ADMIN = {
-  name: "Golap Hasan",
-  email: "admin@gmail.com",
-  profile_image: "https://i.pravatar.cc/150?img=54",
-};
+import { useMyProfileQuery } from "@/redux/feature/auth/authApis";
+import type { Admin } from "@/types/admin.type";
 
 const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   const { setTheme, theme } = useTheme();
-  // const storedAdmin = useSelector((state) => state.auth.admin);
-  const admin = FALLBACK_ADMIN;
-  // const { isLoading } = useGetAdminProfileQuery();
-  const isLoading = false;
+  const dispatch = useAppDispatch();
+  const { data: profileData, isLoading } = useMyProfileQuery(undefined);
+  const admin: Admin | undefined = profileData?.data;
 
   const handleLogout = () => {
-    window.location.href = "auth/login";
+    dispatch(Logout());
   };
 
   return (
@@ -95,22 +90,22 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
                     <>
                       <Avatar className="h-10 w-10 border-2 border-primary-foreground/20">
                         <AvatarImage
-                          src={admin?.profile_image}
-                          alt={admin?.name || "user"}
+                          src={admin?.image}
+                          alt={admin?.fullName || "user"}
                         />
                         <AvatarFallback className="bg-primary-foreground/10 text-primary-foreground">
-                          {getInitials(admin?.name)}
+                          {getInitials(admin?.fullName || "user")}
                         </AvatarFallback>
                       </Avatar>
                       <div className="md:flex flex-col hidden text-primary-foreground">
                         <span
                           className="text-sm font-semibold leading-none"
-                          title={admin?.name || "user"}
+                          title={admin?.fullName || "user"}
                         >
-                          {admin?.name || "user"}
+                          {admin?.fullName || "user"}
                         </span>
                         <span className="text-[10px] text-primary-foreground/80">
-                          Admin
+                          {admin?.role || "Admin"}
                         </span>
                       </div>
                     </>
@@ -126,7 +121,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
                 ) : (
                   <DropdownMenuLabel className="flex min-w-0 flex-col">
                     <span className="text-foreground truncate text-sm font-medium">
-                      {admin?.name || "user"}
+                      {admin?.fullName || "user"}
                     </span>
                     <span className="text-muted-foreground truncate text-xs font-normal">
                       {admin?.email || ""}
@@ -138,8 +133,8 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
                   <DropdownMenuItem asChild>
                     <Link to="/settings/profile" className="w-full flex items-center">
                       <Avatar className="h-4 w-4 mr-2">
-                        <AvatarImage src={admin?.profile_image} />
-                        <AvatarFallback>{getInitials(admin?.name)}</AvatarFallback>
+                        <AvatarImage src={admin?.image} />
+                        <AvatarFallback>{getInitials(admin?.fullName || "user")}</AvatarFallback>
                       </Avatar>
                       <span>Profile</span>
                     </Link>

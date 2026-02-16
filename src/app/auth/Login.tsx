@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-// import { signInUser } from "@/services/auth";
-// import { SuccessToast, ErrorToast } from "@/lib/utils";
+import { useLoginMutation } from "@/redux/feature/auth/authApis";
+import { SuccessToast, ErrorToast } from "@/lib/utils";
+import type { TError } from "@/types/global.types";
 
 const loginSchema = z.object({
   email: z.string().email({
@@ -26,14 +27,14 @@ const loginSchema = z.object({
     message: "Password must be at least 6 characters.",
   }),
   rememberMe: z.boolean().default(false).optional(),
-})
+});
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [login, { isLoading }] = useLoginMutation();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -45,25 +46,22 @@ export default function Login() {
   });
 
   async function onSubmit(data: LoginFormValues) {
-    setIsLoading(true);
     try {
-      // const result = await signInUser(data);
-
-      // if (result?.success) {
-      //   SuccessToast("Login successful! Welcome back!");
-      //   navigate("/");
-      // } else {
-      //   ErrorToast(result?.message || "Invalid email or password. Please try again.");
-      // }
-
-      // Temporary: just log and navigate without real API
-      console.log("Login submitted (API disabled)", data);
-      navigate("/");
-    } catch (error) {
-      // ErrorToast("An unexpected error occurred. Please try again.");
+      const userInfo = {
+        email: data.email,
+        password: data.password,
+      };
+      const result = await login(userInfo).unwrap();
+      if (result?.success) {
+        SuccessToast("Login successful! Welcome back!");
+        navigate("/");
+      }
+    } catch (err) {
+      const error = err as TError;
       console.error("Login failed:", error);
-    } finally {
-      setIsLoading(false);
+      ErrorToast(
+        error?.message || "Invalid email or password. Please try again."
+      );
     }
   }
 
@@ -79,7 +77,9 @@ export default function Login() {
         </div>
         <div className="w-full max-w-100">
           <div className="mb-6 space-y-2">
-            <h1 className="text-2xl font-bold text-[#2e4053]">Sign to Account!</h1>
+            <h1 className="text-2xl font-bold text-[#2e4053]">
+              Sign to Account!
+            </h1>
             <p className="text-sm text-muted-foreground">
               Please enter your email and password to continue.
             </p>
@@ -91,7 +91,9 @@ export default function Login() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-foreground">Email</FormLabel>
+                    <FormLabel className="font-semibold text-foreground">
+                      Email
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="name@example.com"
@@ -109,7 +111,9 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-foreground">Password</FormLabel>
+                    <FormLabel className="font-semibold text-foreground">
+                      Password
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
@@ -166,7 +170,7 @@ export default function Login() {
                 className="w-full bg-[#b49b6a] text-white hover:bg-[#a38b5e]"
                 disabled={isLoading}
               >
-                Log In
+                {isLoading ? "Logging in..." : "Log In"}
               </Button>
             </form>
           </Form>

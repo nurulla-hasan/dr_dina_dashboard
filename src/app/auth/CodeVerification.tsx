@@ -3,66 +3,61 @@ import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-// import { verifyOtpForForgotPassword, sendForgotPasswordOtpAgain } from "@/services/auth";
-// import { SuccessToast, ErrorToast } from "@/lib/utils";
+import { useVerifyOtpMutation, useForgotPasswordMutation } from "@/redux/feature/auth/authApis";
+import { SuccessToast, ErrorToast } from "@/lib/utils";
+import type { TError } from "@/types/global.types";
 
 export default function CodeVerification() {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [verifyOtp, { isLoading: isVerifyLoading }] = useVerifyOtpMutation();
+  const [forgotPassword, { isLoading: isResendLoading }] = useForgotPasswordMutation();
+  
+  const email = localStorage.getItem("reset_email");
 
   const handleResend = async () => {
-    setIsLoading(true);
-    try {
-      // const result = await sendForgotPasswordOtpAgain();
-      // if (result?.success) {
-      //   SuccessToast("Code resent! A new verification code has been sent to your email.");
-      //   setError("");
-      //   setCode("");
-      // } else {
-      //   ErrorToast(result?.message || "Failed to resend code. Please try again.");
-      // }
+    if (!email) {
+      ErrorToast("Email not found. Please try again from the beginning.");
+      navigate("/auth/forgot-password");
+      return;
+    }
 
-      console.log("Resend code (API disabled)");
+    try {
+      const res = await forgotPassword({ email }).unwrap();
+      SuccessToast(res?.message || "Code resent! A new verification code has been sent to your email.");
       setError("");
       setCode("");
-    } catch (error) {
-      // ErrorToast("An unexpected error occurred. Please try again.");
-      console.error("Resend failed:", error);
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.message || "Failed to resend code. Please try again.");
     }
   };
 
   const handleSubmit = async () => {
     if (code.length !== 6) {
       setError("Please enter all 6 digits");
-      return
+      return;
     }
 
-    setIsLoading(true);
-    try {
-      // const result = await verifyOtpForForgotPassword(code);
-      // if (result?.success) {
-      //   SuccessToast("Code verified! Redirecting to reset password...");
-      //   setTimeout(() => {
-      //     navigate("/auth/reset-password");
-      //   }, 1000);
-      // } else {
-      //   setError("Invalid verification code. Please try again.");
-      //   ErrorToast(result?.message || "Invalid code. Please try again.");
-      //   setCode("");
-      // }
+    if (!email) {
+        ErrorToast("Email not found. Please try again from the beginning.");
+        navigate("/auth/forgot-password");
+        return;
+    }
 
-      console.log("Code verification (API disabled)", code);
-      navigate("/auth/reset-password");
-    } catch (error) {
-      console.error("Verification failed:", error);
-      setError("Invalid verification code. Please try again.");
+    try {
+      const res = await verifyOtp({ email, otp: code }).unwrap();
+      SuccessToast(res?.message || "Code verified! Redirecting to reset password...");
+      setTimeout(() => {
+        navigate("/auth/reset-password");
+      }, 1000);
+    } catch (err) {
+      const error = err as TError;
+      setError(error?.message || "Invalid verification code. Please try again.");
+      ErrorToast(error?.message || "Invalid code. Please try again.");
       setCode("");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -93,7 +88,7 @@ export default function CodeVerification() {
                     setCode(value)
                     setError("")
                   }}
-                  disabled={isLoading}
+                  disabled={isVerifyLoading}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} className="border-gray-200 bg-gray-50" />
@@ -113,9 +108,9 @@ export default function CodeVerification() {
               <Button  
                 onClick={handleSubmit} 
                 className="w-full bg-[#b49b6a] text-white hover:bg-[#a38b5e]" 
-                loading={isLoading}
+                loading={isVerifyLoading}
                 loadingText="Verifying..."
-                disabled={isLoading || code.length !== 6}
+                disabled={isVerifyLoading || code.length !== 6}
               >
                 Verify Code
               </Button>
@@ -127,7 +122,7 @@ export default function CodeVerification() {
                 <Button
                   variant="link"
                   onClick={handleResend}
-                  disabled={isLoading}
+                  disabled={isResendLoading}
                   className="p-0 h-auto font-normal text-[#2e4053] underline-offset-4 hover:text-primary"
                 >
                   Resend Code

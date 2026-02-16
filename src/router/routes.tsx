@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "@/layout/main-layout";
 import { lazy } from "react";
 import AuthLayout from "@/layout/auth-layout";
+import ProtectedRoute from "@/layout/protected-route";
 
 //======================================================================================================================
 // App pages (all under src/app)
@@ -33,7 +34,11 @@ const CodeVerification = lazy(() => import("@/app/auth/CodeVerification"));
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout />,
+        element: (
+            <ProtectedRoute>
+                <MainLayout />
+            </ProtectedRoute>
+        ),
         children: [
             { index: true, element: <Dashboard /> },
 

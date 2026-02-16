@@ -23,8 +23,8 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
-// import { useDispatch } from "react-redux";
-// import { setAccessToken, setAdmin } from "@/redux/feature/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { Logout } from "@/redux/feature/auth/authSlice";
 import { Button } from "../ui/button";
 
 const MAIN_NAV_ITEMS = [
@@ -50,7 +50,7 @@ const Sidebar = ({
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
 }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const prevLocation = useRef(location);
   const section = location.pathname.split("/")[1] || "";
@@ -69,12 +69,9 @@ const Sidebar = ({
     prevLocation.current = location;
   }, [location, isSidebarOpen, setIsSidebarOpen]);
 
-  // const handleLogout = () => {
-  //     dispatch(setAdmin(null));
-  //     dispatch(setAccessToken(null));
-  //     localStorage.removeItem("accessToken");
-  //     window.location.href = "/auth/login";
-  // };
+  const handleLogout = () => {
+    dispatch(Logout());
+  };
 
   return (
     <div
@@ -160,15 +157,14 @@ const Sidebar = ({
         </nav>
       </ScrollArea>
       <div className="border-t border-sidebar-border p-4">
-        <Link to="/auth/login" className="block w-full text-center">
-          <Button
-            variant="outline"
-            className="justify-start w-full"
-          >
-            <LogOut />
-            Logout
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          className="justify-start w-full"
+          onClick={handleLogout}
+        >
+          <LogOut />
+          Logout
+        </Button>
       </div>
     </div>
   );

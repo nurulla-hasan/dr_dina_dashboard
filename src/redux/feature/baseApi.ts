@@ -26,7 +26,7 @@ interface RefreshTokenResponse {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api/v1", // Replace with your actual API base URL
+  baseUrl: "http://10.10.20.34:5000/api/v1",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {

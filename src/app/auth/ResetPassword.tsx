@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useNavigate } from "react-router-dom";
@@ -14,8 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
-// import { setNewPassword } from "@/services/auth";
-// import { SuccessToast, ErrorToast } from "@/lib/utils";
+import { useResetPasswordMutation } from "@/redux/feature/auth/authApis";
+import { SuccessToast, ErrorToast } from "@/lib/utils";
+import type { TError } from "@/types/global.types";
 
 const resetPasswordSchema = z.object({
   password: z.string()
@@ -35,8 +36,10 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const email = localStorage.getItem("reset_email");
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -47,37 +50,31 @@ export default function ResetPassword() {
   });
 
   async function onSubmit(data: ResetPasswordFormValues) {
-    setIsLoading(true);
+    if (!email) {
+      ErrorToast("Email not found. Please try again from the beginning.");
+      navigate("/auth/forgot-password");
+      return;
+    }
+    
     try {
-      // const result = await setNewPassword(data.password);
-      // if (result?.success) {
-      //   SuccessToast("Password reset successful! Your password has been successfully reset.");
-      //   setIsSuccess(true);
-      //   setTimeout(() => {
-      //     navigate("/auth/login");
-      //   }, 2000);
-      // } else {
-      //   ErrorToast(result?.message || "Password reset failed. Please try again.");
-      // }
-
-      console.log("Reset password submitted (API disabled)", data);
+      const res = await resetPassword({ email, newPassword: data.password }).unwrap();
+      SuccessToast(res?.message || "Password reset successful! Your password has been successfully reset.");
+      localStorage.removeItem("reset_email");
       setIsSuccess(true);
       setTimeout(() => {
         navigate("/auth/login");
       }, 2000);
-    } catch (error) {
-      // ErrorToast("An unexpected error occurred. Please try again.");
-      console.error("Password reset failed:", error);
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.message || "Password reset failed. Please try again.");
     }
   }
 
-  const password = form.watch("password")
-  const hasMinLength = password.length >= 8
-  const hasUpperCase = /[A-Z]/.test(password)
-  const hasLowerCase = /[a-z]/.test(password)
-  const hasNumber = /[0-9]/.test(password)
+  const password = useWatch({ control: form.control, name: "password" });
+  const hasMinLength = password?.length >= 8;
+  const hasUpperCase = /[A-Z]/.test(password || "");
+  const hasLowerCase = /[a-z]/.test(password || "");
+  const hasNumber = /[0-9]/.test(password || "");
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-background">

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,8 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// import { forgotPassword } from "@/services/auth";
-// import { SuccessToast, ErrorToast } from "@/lib/utils";
+import { useForgotPasswordMutation } from "@/redux/feature/auth/authApis";
+import { SuccessToast, ErrorToast } from "@/lib/utils";
+import type { TError } from "@/types/global.types";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({
@@ -27,7 +27,8 @@ type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
 
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -37,23 +38,14 @@ export default function ForgotPassword() {
   });
 
   async function onSubmit(data: ForgotPasswordFormValues) {
-    setIsLoading(true);
     try {
-      // const result = await forgotPassword(data.email);
-      // if (result?.success) {
-      //   SuccessToast("Verification code sent! Please check your email.");
-      //   navigate("/auth/verify");
-      // } else {
-      //   ErrorToast(result?.message || "Failed to send code. Please try again.");
-      // }
-
-      console.log("Forgot password submitted (API disabled)", data);
+      const res = await forgotPassword(data).unwrap();
+      SuccessToast(res?.message || "Verification code sent! Please check your email.");
+      localStorage.setItem("reset_email", data.email);
       navigate("/auth/verify");
-    } catch (error) {
-      // ErrorToast("An unexpected error occurred. Please try again.");
-      console.error("Password reset failed:", error);
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.message || "Failed to send code. Please try again.");
     }
   }
 

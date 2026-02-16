@@ -3,7 +3,7 @@ import { tagTypes } from "../../tagTypes";
 import { jwtDecode } from "jwt-decode";
 import { ErrorToast } from "../../../lib/utils";
 import { SetUser } from "./authSlice";
-import type { TDecodedToken, TError } from "../../../types/global.types";
+import type { TDecodedToken } from "../../../types/global.types";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,7 +14,7 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
       invalidatesTags: [tagTypes.user],
-      async onQueryStarted({ dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           const accessToken = data?.data?.accessToken;
@@ -33,9 +33,9 @@ const authApi = baseApi.injectEndpoints({
 
           // Set access token and refresh token
           dispatch(SetUser({ accessToken, refreshToken }));
-        } catch (err) {
-          const error = err as TError;
-          ErrorToast(error?.message || "Something went wrong");
+        } catch {
+          // const error = err as TError;
+          // ErrorToast(error?.message || "Something went wrong");
         }
       },
     }),
