@@ -6,24 +6,17 @@ import ProtectedRoute from "@/layout/protected-route";
 
 //======================================================================================================================
 // App pages (all under src/app)
-const Dashboard = lazy(() => import("@/app/dashboard/Dashboard"));
 const Profile = lazy(() => import("@/app/settings/profile/Profile"));
 const Privacy = lazy(() => import("@/app/settings/privacy/Privacy"));
 const Disclaimers = lazy(() => import("@/app/settings/disclimers/Disclimers"));
 const Terms = lazy(() => import("@/app/settings/terms/Terms"));
 const About = lazy(() => import("@/app/settings/about-us/About"));
 const FAQ = lazy(() => import("@/app/settings/faq/Faq"));
+
+const Dashboard = lazy(() => import("@/app/dashboard/Dashboard"));
 const Users = lazy(() => import("@/app/management/users/Users"));
-const Admins = lazy(() => import("@/app/management/admins/Admins"));
-const Trainers = lazy(() => import("@/app/management/trainers/Trainers"));
-const Programs = lazy(() => import("@/app/management/programs/Programs"));
-const Gyms = lazy(() => import("@/app/management/gyms/Gyms"));
-const Newsfeed = lazy(() => import("@/app/management/newsfeed/Newsfeed"));
+const Courses = lazy(() => import("@/app/management/courses/Courses"));
 const Notifications = lazy(() => import("@/app/notifications/Notifications"));
-const Subscriptions = lazy(() => import("@/app/management/subscriptions/Subscriptions"));
-const Fees = lazy(() => import("@/app/management/fees/Fees"));
-const Tickets = lazy(() => import("@/app/management/tickets/Tickets"));
-const Reviews = lazy(() => import("@/app/management/reviews/Reviews"));
 const Login = lazy(() => import("@/app/auth/Login"));
 const ForgotPassword = lazy(() => import("@/app/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("@/app/auth/ResetPassword"));
@@ -44,15 +37,7 @@ export const router = createBrowserRouter([
 
             // Management
             { path: "users", element: <Users /> },
-            { path: "management/admins", element: <Admins /> },
-            { path: "management/trainers", element: <Trainers /> },
-            { path: "management/programs", element: <Programs /> },
-            { path: "management/gyms", element: <Gyms /> },
-            { path: "management/newsfeed", element: <Newsfeed /> },
-            { path: "management/subscriptions", element: <Subscriptions /> },
-            { path: "management/fees", element: <Fees /> },
-            { path: "management/tickets", element: <Tickets /> },
-            { path: "management/reviews", element: <Reviews /> },
+            { path: "courses", element: <Courses /> },
             { path: "notifications", element: <Notifications /> },
             // Settings
             { path: "settings/profile", element: <Profile /> },
