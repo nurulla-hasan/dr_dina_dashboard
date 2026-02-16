@@ -122,7 +122,8 @@ export default function CodeVerification() {
                 <Button
                   variant="link"
                   onClick={handleResend}
-                  disabled={isResendLoading}
+                  loading={isResendLoading}
+                  loadingText="Resending..."
                   className="p-0 h-auto font-normal text-[#2e4053] underline-offset-4 hover:text-primary"
                 >
                   Resend Code

@@ -202,7 +202,8 @@ export default function ResetPassword() {
                   <Button
                     type="submit"
                     className="w-full bg-[#b49b6a] text-white hover:bg-[#a38b5e]"
-                    disabled={isLoading}
+                    loading={isLoading}
+                    loadingText="Resetting..."
                   >
                     Reset Password
                   </Button>

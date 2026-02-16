@@ -167,10 +167,10 @@ export default function Login() {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-[#b49b6a] text-white hover:bg-[#a38b5e]"
-                disabled={isLoading}
+                loading={isLoading}
+                loadingText="Logging in..."
               >
-                {isLoading ? "Logging in..." : "Log In"}
+                Log In
               </Button>
             </form>
           </Form>

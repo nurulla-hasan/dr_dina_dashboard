@@ -67,13 +67,6 @@ const authApi = baseApi.injectEndpoints({
         body: email,
       }),
     }),
-    refreshToken: builder.mutation({
-      query: (token) => ({
-        url: "/auth/refresh-token",
-        method: "POST",
-        body: token,
-      }),
-    }),
     changePassword: builder.mutation({
       query: (data) => ({
         url: "/auth/changePassword",
@@ -97,7 +90,6 @@ export const {
   useVerifyOtpMutation,
   useResetPasswordMutation,
   useResendOtpMutation,
-  useRefreshTokenMutation,
   useChangePasswordMutation,
   useMyProfileQuery,
 } = authApi;
