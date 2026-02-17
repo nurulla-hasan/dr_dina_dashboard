@@ -86,9 +86,23 @@ const ChangePasswordForm = () => {
               name="oldPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold">
-                    Current Password
-                  </FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel className="font-semibold">
+                      Current Password
+                    </FormLabel>
+                    <a
+                      href="/auth/forgot-password"
+                      className="text-sm text-primary hover:underline font-medium"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        localStorage.removeItem("accessToken");
+                        localStorage.removeItem("refreshToken");
+                        window.location.href = "/auth/forgot-password";
+                      }}
+                    >
+                      Forgot Password?
+                    </a>
+                  </div>
                   <FormControl>
                     <div className="relative group">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />

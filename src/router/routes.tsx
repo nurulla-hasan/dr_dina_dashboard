@@ -17,6 +17,10 @@ const Dashboard = lazy(() => import("@/app/dashboard/Dashboard"));
 const Users = lazy(() => import("@/app/management/users/Users"));
 const Courses = lazy(() => import("@/app/management/courses/Courses"));
 const CourseDetails = lazy(() => import("@/app/management/courses/CourseDetails"));
+const TeacherList = lazy(() => import("@/app/management/teachers/Teachers"));
+const AssistanceList = lazy(() => import("@/app/management/assistance/Assistance"));
+const StudentsList = lazy(() => import("@/app/management/students/Students"));
+const ParentsList = lazy(() => import("@/app/management/parents/Parents"));
 const Notifications = lazy(() => import("@/app/notifications/Notifications"));
 const Login = lazy(() => import("@/app/auth/Login"));
 const ForgotPassword = lazy(() => import("@/app/auth/ForgotPassword"));
@@ -40,6 +44,13 @@ export const router = createBrowserRouter([
             { path: "users", element: <Users /> },
             { path: "courses", element: <Courses /> },
             { path: "courses/:id", element: <CourseDetails /> },
+            
+            // User Roles
+            { path: "teachers", element: <TeacherList /> },
+            { path: "assistance", element: <AssistanceList /> },
+            { path: "students", element: <StudentsList /> },
+            { path: "parents", element: <ParentsList /> },
+
             { path: "notifications", element: <Notifications /> },
             // Settings
             { path: "settings/profile", element: <Profile /> },
