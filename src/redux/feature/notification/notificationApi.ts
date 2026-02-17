@@ -1,14 +1,19 @@
 import { tagTypes } from "@/redux/tagTypes";
 import { baseApi } from "../baseApi";
+import { buildQueryParams } from "@/lib/utils";
 
 
 const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getMyNotifications: builder.query({
-      query: () => ({
-        url: "/notification/my-notifications",
-        method: "GET",
-      }),
+      query: (query) => {
+        const params = buildQueryParams(query);
+        return {
+          url: "/notification/my-notifications",
+          method: "GET",
+          params: params,
+        };
+      },
       providesTags: [tagTypes.notification],
     }),
     markAsRead: builder.mutation({

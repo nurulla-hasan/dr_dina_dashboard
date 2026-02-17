@@ -75,7 +75,7 @@ const Notifications = () => {
                 onClick={handleMarkAllAsRead}
                 disabled={isMarkingAll}
               >
-                <CheckCheck className="h-4 w-4" />
+                <CheckCheck />
                 Mark all as read
               </Button>
             )}
@@ -128,13 +128,13 @@ const Notifications = () => {
                             : "text-muted-foreground"
                         )}
                       >
-                        {notification.message}
+                        {notification.title}
                       </h4>
                       {!notification.isRead && (
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 rounded-full hover:bg-primary/10 hover:text-primary -mt-1 -mr-1"
+                          className="rounded-full hover:bg-primary/10 hover:text-primary -mt-1 -mr-1"
                           onClick={() => handleMarkAsRead(notification._id)}
                           disabled={isMarking}
                           title="Mark as read"
@@ -143,6 +143,9 @@ const Notifications = () => {
                         </Button>
                       )}
                     </div>
+                    <p className="text-sm text-muted-foreground">
+                      {notification.message}
+                    </p>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                       <Clock className="h-3 w-3" />
                       {formatDate(notification.createdAt)}
