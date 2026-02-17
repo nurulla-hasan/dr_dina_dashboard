@@ -1,0 +1,27 @@
+{
+    "success": true,
+    "message": "Profile retrive successfully!",
+    "statusCode": 200,
+    "data": {
+        "verification": {
+            "code": null,
+            "expireDate": null
+        },
+        "_id": "6990607976afcd06167981b8",
+        "firstName": "admin",
+        "lastName": "admin",
+        "fullName": "admin admin",
+        "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771069566/el-afrik/fg1c9px2x6sksml7u8sb.png",
+        "email": "rayhanshorker108@gmail.com",
+        "contact": "+8801609537568",
+        "location": "dhaka",
+        "dob": "2012-12-04T18:00:00.000Z",
+        "status": "in-progress",
+        "role": "superAdmin",
+        "fcmToken": "kdbcbfdfkjcdhskljoidj",
+        "isOtpVerified": true,
+        "createdAt": "2026-02-14T11:46:01.551Z",
+        "updatedAt": "2026-02-15T06:39:01.320Z",
+        "__v": 0
+    }
+}

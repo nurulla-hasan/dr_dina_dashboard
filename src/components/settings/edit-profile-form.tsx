@@ -12,35 +12,72 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, User, MapPin, Save } from "lucide-react";
+import { Phone, Mail, User, Save, Loader2 } from "lucide-react";
+import { useEditProfileMutation } from "@/redux/feature/auth/authApis";
+import { useEffect } from "react";
+import { ErrorToast, SuccessToast } from "@/lib/utils";
+import type { TError } from "@/types/global.types";
+import type { Admin } from "@/types/admin.type";
 
 const profileSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
+  lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  phone: z.string().min(10, { message: "Phone number must be at least 10 characters." }),
-  address: z.string().min(5, { message: "Address must be at least 5 characters." }),
+  contact: z.string().min(10, { message: "Contact number must be at least 10 characters." }),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
-const EditProfileForm = () => {
+const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admin; selectedImage: File | null; setSelectedImage: (file: File | null) => void }) => {
+  const [editProfile, { isLoading }] = useEditProfileMutation();
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "John Doe",
-      email: "admin@example.com",
-      phone: "+1 234 567 890",
-      address: "123 Main St, New York, NY 10001",
+      firstName: "",
+      lastName: "",
+      email: "",
+      contact: "",
     },
   });
 
-  function onSubmit(values: ProfileFormValues) {
-    console.log(values);
-    // Handle form submission
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        contact: user.contact || "",
+      });
+    }
+  }, [user, form]);
+
+  async function onSubmit(values: ProfileFormValues) {
+    const formData = new FormData();
+    const body = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      contact: values.contact,
+    };
+    formData.append("body", JSON.stringify(body));
+    if (selectedImage) {
+      formData.append("image", selectedImage);
+    }
+
+    try {
+      const res = await editProfile(formData).unwrap();
+      if (res.success) {
+        SuccessToast(res.message || "Profile updated successfully");
+        setSelectedImage(null);
+      }
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.data?.message || "Failed to update profile");
+    }
   }
 
   return (
-    <Card className="border-none shadow-md bg-background/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+    <Card>
       <CardHeader className="pb-4 flex flex-row items-center gap-4">
         <div className="p-3 bg-primary/10 rounded-xl shrink-0">
           <User className="h-6 w-6 text-primary" />
@@ -58,14 +95,31 @@ const EditProfileForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <FormField
                 control={form.control}
-                name="name"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Full Name</FormLabel>
+                    <FormLabel className="font-semibold">First Name</FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="John Doe" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
+                        <Input placeholder="John" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">Last Name</FormLabel>
+                    <FormControl>
+                      <div className="relative group">
+                        <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                        <Input placeholder="Doe" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -82,7 +136,7 @@ const EditProfileForm = () => {
                     <FormControl>
                       <div className="relative group">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="admin@example.com" type="email" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
+                        <Input placeholder="admin@example.com" type="email" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} disabled />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -92,7 +146,7 @@ const EditProfileForm = () => {
 
               <FormField
                 control={form.control}
-                name="phone"
+                name="contact"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-semibold">Phone Number</FormLabel>
@@ -106,29 +160,25 @@ const EditProfileForm = () => {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold">Location</FormLabel>
-                    <FormControl>
-                      <div className="relative group">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="123 Main St, New York" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
-            <div className="pt-2">
-              <Button type="submit" className="w-full md:w-auto px-8 gap-2 shadow-lg shadow-primary/20">
-                <Save className="h-4 w-4" />
-                Save Changes
+            <div className="flex justify-end pt-2">
+              <Button 
+                type="submit" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02]"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Changes
+                  </>
+                )}
               </Button>
             </div>
           </form>

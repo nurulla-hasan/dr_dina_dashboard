@@ -81,6 +81,14 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.user],
     }),
+    editProfile: builder.mutation({
+      query: (data) => ({
+        url: "/user/edit-profile",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
   }),
 });
 
@@ -92,4 +100,5 @@ export const {
   useResendOtpMutation,
   useChangePasswordMutation,
   useMyProfileQuery,
+  useEditProfileMutation,
 } = authApi;
