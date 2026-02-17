@@ -93,6 +93,12 @@ interface MultipleSelectorProps {
 
   /** hide the clear all button. */
   hideClearAllButton?: boolean
+  /**
+   * Style of the options list.
+   * 'dropdown': The options list will float below the input (default).
+   * 'list': The options list will be displayed as a static list below the input.
+   */
+  variant?: 'dropdown' | 'list'
 }
 
 export interface MultipleSelectorRef {
@@ -196,7 +202,8 @@ const MultipleSelector = ({
   triggerSearchOnFocus = false,
   commandProps,
   inputProps,
-  hideClearAllButton = false
+  hideClearAllButton = false,
+  variant = 'dropdown'
 }: MultipleSelectorProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [open, setOpen] = React.useState(false)
@@ -545,13 +552,16 @@ const MultipleSelector = ({
       <div className='relative'>
         <div
           className={cn(
-            'border-input absolute top-2 z-10 w-full overflow-hidden rounded-md border',
-            'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-            !open && 'hidden'
+            'border-input overflow-hidden rounded-md border',
+            variant === 'dropdown' &&
+              'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+            !open && variant === 'dropdown' && 'hidden',
+            variant === 'dropdown' && 'absolute top-2 z-10 w-full',
+            variant === 'list' && 'mt-2 w-full shadow-none'
           )}
           data-state={open ? 'open' : 'closed'}
         >
-          {open && (
+          {(open || variant === 'list') && (
             <CommandList
               className='bg-popover text-popover-foreground shadow-lg outline-hidden'
               onMouseLeave={() => {

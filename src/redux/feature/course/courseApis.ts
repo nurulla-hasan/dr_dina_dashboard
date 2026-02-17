@@ -55,7 +55,7 @@ const courseApi = baseApi.injectEndpoints({
 
     addStudent: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/courses/add-student/${id}`,
+        url: `/courses/add-students/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -64,7 +64,7 @@ const courseApi = baseApi.injectEndpoints({
 
     removeStudent: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/courses/remove-student/${id}`,
+        url: `/courses/remove-students/${id}`,
         method: "PATCH",
         body: data,
       }),
