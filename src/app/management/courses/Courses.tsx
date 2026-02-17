@@ -18,7 +18,7 @@ const Courses = () => {
 
   return (
     <PageLayout>
-      <div className="flex flex-col md:flex-row md:justify-between">
+      <div className="flex flex-col md:flex-row md:justify-between gap-2">
         <PageHeader
           title="Course Managements"
           description="View and manage all courses"
