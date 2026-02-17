@@ -196,11 +196,11 @@ export const AssignUserModal = ({
                   course.students.some((s) => s._id === user._id);
                 // For assign-teacher, disable if already assigned (optional, but maybe good UX)
                 const isCurrentTeacher =
-                  type === "assign-teacher" && course.teacher?._id === user._id;
+                  type === "assign-teacher" && course.teacherId?._id === user._id;
                 // For assign-assistant, disable if already assigned
                 const isCurrentAssistant =
                   type === "assign-assistant" &&
-                  course.assistant?._id === user._id;
+                  course.assistantId?._id === user._id;
 
                 const isDisabled =
                   isAlreadyEnrolled || isCurrentTeacher || isCurrentAssistant;

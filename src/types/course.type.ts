@@ -7,8 +7,8 @@ export type TCourse = {
   subjectName: string;
   image?: string;
   status: "Active" | "Pending" | "Complete";
-  teacher?: TUser | null;
-  assistant?: TUser | null;
+  teacherId?: TUser | null;
+  assistantId?: TUser | null;
   students: TUser[];
   totalEnrolled: number;
   createdAt: string;
