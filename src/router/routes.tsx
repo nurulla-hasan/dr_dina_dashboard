@@ -8,7 +8,6 @@ import ProtectedRoute from "@/layout/protected-route";
 // App pages (all under src/app)
 const Profile = lazy(() => import("@/app/settings/profile/Profile"));
 const Privacy = lazy(() => import("@/app/settings/privacy/Privacy"));
-const Disclaimers = lazy(() => import("@/app/settings/disclimers/Disclimers"));
 const Terms = lazy(() => import("@/app/settings/terms/Terms"));
 const About = lazy(() => import("@/app/settings/about-us/About"));
 const FAQ = lazy(() => import("@/app/settings/faq/Faq"));
@@ -56,7 +55,7 @@ export const router = createBrowserRouter([
             { path: "settings/profile", element: <Profile /> },
             { path: "settings/about", element: <About /> },
             { path: "settings/terms", element: <Terms /> },
-            { path: "settings/disclaimers", element: <Disclaimers /> },
+            // { path: "settings/disclaimers", element: <Disclaimers /> },
             { path: "settings/privacy", element: <Privacy /> },
             { path: "settings/faq", element: <FAQ /> },
         ]
