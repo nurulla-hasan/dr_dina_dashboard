@@ -31,15 +31,15 @@ const chartData = [
 
 const MonthlySalesChart = () => {
   return (
-    <Card className="border-none shadow-sm bg-white dark:bg-sidebar rounded-2xl overflow-hidden">
-      <CardHeader className="flex flex-row items-center justify-between pb-8 border-b border-gray-100 dark:border-gray-800">
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
         <div className="space-y-1">
-          <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">
+          <CardTitle className="text-xl font-bold">
             Monthly Sales
           </CardTitle>
         </div>
         <Select defaultValue="2025">
-            <SelectTrigger className="w-25 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm focus:ring-1 focus:ring-primary">
+            <SelectTrigger className="w-25">
                 <SelectValue placeholder="Year" />
             </SelectTrigger>
             <SelectContent>
@@ -59,13 +59,13 @@ const MonthlySalesChart = () => {
                   <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.6} />
                 </linearGradient>
               </defs>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f3f4f6" />
+              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis
                 dataKey="month"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={12}
-                tick={{ fontSize: 12, fill: "#9ca3af", fontWeight: 500 }}
+                tick={{ fontSize: 12, fill: "var(--muted-foreground)", fontWeight: 500 }}
                 interval={0}
               />
               <YAxis
@@ -73,16 +73,16 @@ const MonthlySalesChart = () => {
                 axisLine={false}
                 width={60}
                 tickMargin={12}
-                tick={{ fontSize: 12, fill: "#9ca3af", fontWeight: 500 }}
+                tick={{ fontSize: 12, fill: "var(--muted-foreground)", fontWeight: 500 }}
                 tickFormatter={(value) => `$${value}`}
               />
               <Tooltip
-                  cursor={{ fill: '#f9fafb' }}
+                  cursor={{ fill: 'var(--muted)', opacity: 0.4 }}
                   content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                       return (
-                          <div className="bg-white dark:bg-gray-800 p-3 border border-gray-100 dark:border-gray-700 shadow-xl rounded-xl">
-                            <p className="text-xs text-gray-500 mb-1 font-medium">{payload[0].payload.month}</p>
+                          <div className="bg-background p-3 border shadow-xl rounded-xl">
+                            <p className="text-xs text-foreground mb-1 font-medium">{payload[0].payload.month}</p>
                             <p className="text-lg font-bold text-primary">
                               ${payload[0].value}k
                             </p>

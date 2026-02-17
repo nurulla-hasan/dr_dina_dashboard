@@ -10,8 +10,6 @@ import {
   LogOut,
   ChevronDown,
   UserRoundPen,
-  BadgeInfo,
-  ReceiptText,
   MessageCircleQuestion,
   LayoutGrid,
   ShieldCheck,
@@ -20,6 +18,7 @@ import {
   Handshake,
   FileText,
   Info,
+  Shield,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
@@ -40,10 +39,10 @@ const MAIN_NAV_ITEMS = [
 
 const SETTINGS_SUB_ITEMS = [
   { name: "Profile", icon: UserRoundPen, href: "/settings/profile" },
-  { name: "Privacy Policy", icon: BadgeInfo, href: "/settings/privacy" },
-  { name: "Terms", icon: ReceiptText, href: "/settings/terms" },
-  { name: "About Us", icon: Info, href: "/settings/about" },
   { name: "FAQ", icon: MessageCircleQuestion, href: "/settings/faq" },
+  { name: "About Us", icon: Info, href: "/settings/about" },
+  { name: "Privacy Policy", icon: Shield, href: "/settings/privacy" },
+  { name: "Terms", icon: FileText, href: "/settings/terms" },
 ];
 
 const Sidebar = ({
@@ -82,6 +81,7 @@ const Sidebar = ({
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 flex flex-col`}
     >
+      {/* Brand */}
       <div className="flex flex-col items-center px-6 py-4">
         <Link to="/" className="flex flex-col items-center">
           <img
@@ -91,7 +91,9 @@ const Sidebar = ({
           />
         </Link>
       </div>
-      <ScrollArea className="h-[calc(100vh-149px)]">
+
+      {/* Main Navigation */}
+      <ScrollArea className="h-[calc(100vh-200px)]">
         <nav className="grow space-y-2 p-4">
           {MAIN_NAV_ITEMS.map((item) => (
             <NavLink
@@ -159,6 +161,8 @@ const Sidebar = ({
           </Collapsible>
         </nav>
       </ScrollArea>
+
+      {/* Logout Button */}
       <div className="border-t border-sidebar-border p-4">
         <Button
           variant="outline"
