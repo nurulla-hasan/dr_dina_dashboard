@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, User, Save, Loader2 } from "lucide-react";
+import { Phone, Mail, User } from "lucide-react";
 import { useEditProfileMutation } from "@/redux/feature/auth/authApis";
 import { useEffect } from "react";
 import { ErrorToast, SuccessToast } from "@/lib/utils";
@@ -20,15 +20,29 @@ import type { TError } from "@/types/global.types";
 import type { Admin } from "@/types/admin.type";
 
 const profileSchema = z.object({
-  firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
-  lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
+  firstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters." }),
+  lastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  contact: z.string().min(10, { message: "Contact number must be at least 10 characters." }),
+  contact: z
+    .string()
+    .min(10, { message: "Contact number must be at least 10 characters." }),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
-const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admin; selectedImage: File | null; setSelectedImage: (file: File | null) => void }) => {
+const EditProfileForm = ({
+  user,
+  selectedImage,
+  setSelectedImage,
+}: {
+  user: Admin;
+  selectedImage: File | null;
+  setSelectedImage: (file: File | null) => void;
+}) => {
   const [editProfile, { isLoading }] = useEditProfileMutation();
 
   const form = useForm<ProfileFormValues>({
@@ -83,7 +97,9 @@ const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admi
           <User className="h-6 w-6 text-primary" />
         </div>
         <div className="space-y-1">
-          <CardTitle className="text-xl font-bold">Personal Information</CardTitle>
+          <CardTitle className="text-xl font-bold">
+            Personal Information
+          </CardTitle>
           <p className="text-sm text-muted-foreground">
             Update your personal details and contact information.
           </p>
@@ -102,7 +118,11 @@ const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admi
                     <FormControl>
                       <div className="relative group">
                         <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="John" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
+                        <Input
+                          placeholder="John"
+                          className="pl-10 bg-muted/30 focus:bg-background transition-all"
+                          {...field}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -119,7 +139,11 @@ const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admi
                     <FormControl>
                       <div className="relative group">
                         <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="Doe" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
+                        <Input
+                          placeholder="Doe"
+                          className="pl-10 bg-muted/30 focus:bg-background transition-all"
+                          {...field}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -132,11 +156,19 @@ const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admi
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Email Address</FormLabel>
+                    <FormLabel className="font-semibold">
+                      Email Address
+                    </FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="admin@example.com" type="email" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} disabled />
+                        <Input
+                          placeholder="admin@example.com"
+                          type="email"
+                          className="pl-10 bg-muted/30 focus:bg-background transition-all"
+                          {...field}
+                          disabled
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -149,11 +181,17 @@ const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admi
                 name="contact"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Phone Number</FormLabel>
+                    <FormLabel className="font-semibold">
+                      Phone Number
+                    </FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <Input placeholder="+1 234 567 890" className="pl-10 bg-muted/30 focus:bg-background transition-all" {...field} />
+                        <Input
+                          placeholder="+1 234 567 890"
+                          className="pl-10 bg-muted/30 focus:bg-background transition-all"
+                          {...field}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -163,22 +201,14 @@ const EditProfileForm = ({ user, selectedImage, setSelectedImage }: { user: Admi
             </div>
 
             <div className="flex justify-end pt-2">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02]"
-                disabled={isLoading}
+                loading={isLoading}
+                loadingText="Saving..."
+                disabled={!form.formState.isDirty}
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    Save Changes
-                  </>
-                )}
+                Save Changes
               </Button>
             </div>
           </form>

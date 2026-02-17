@@ -208,6 +208,7 @@ const ChangePasswordForm = () => {
                 className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:scale-[1.02]"
                 loading={isLoading}
                 loadingText="Updating..."
+                disabled={!form.formState.isDirty}
               >
                 Update Password
               </Button>
