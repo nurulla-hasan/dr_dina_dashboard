@@ -34,6 +34,8 @@ import type { TCourse } from "@/types/course.type";
 import type { TUser } from "@/types/user.type";
 import type { TError } from "@/types/global.types";
 
+import { CourseTabularReport } from "@/components/management/courses/course-tabular-report";
+
 const CourseDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -75,7 +77,7 @@ const CourseDetails = () => {
       <div className="p-6 flex flex-col items-center justify-center h-[50vh]">
         <h2 className="text-2xl font-bold mb-4">Course not found</h2>
         <Button onClick={() => navigate("/courses")}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft />
           Back to Courses
         </Button>
       </div>
@@ -181,7 +183,7 @@ const CourseDetails = () => {
                         size="icon"
                         className="rounded-full"
                       >
-                        <Edit className="h-4 w-4" />
+                        <Edit />
                       </Button>
                     }
                   />
@@ -192,7 +194,7 @@ const CourseDetails = () => {
                     className="rounded-full"
                     onClick={() => setIsConfirmOpen(true)}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 />
                   </Button>
                 </div>
               </div>
@@ -229,7 +231,7 @@ const CourseDetails = () => {
                   className="h-8 w-8"
                   onClick={() => setAssignType("assign-teacher")}
                 >
-                  <Edit className="h-4 w-4" />
+                  <Edit />
                 </Button>
               </div>
             ) : (
@@ -238,7 +240,7 @@ const CourseDetails = () => {
                 className="w-full h-15 border-dashed"
                 onClick={() => setAssignType("assign-teacher")}
               >
-                <ShieldCheck className="mr-2 h-4 w-4" />
+                <ShieldCheck />
                 Assign Teacher
               </Button>
             )}
@@ -271,7 +273,7 @@ const CourseDetails = () => {
                   className="h-8 w-8"
                   onClick={() => setAssignType("assign-assistant")}
                 >
-                  <Edit className="h-4 w-4" />
+                  <Edit />
                 </Button>
               </div>
             ) : (
@@ -280,7 +282,7 @@ const CourseDetails = () => {
                 className="w-full h-15 border-dashed"
                 onClick={() => setAssignType("assign-assistant")}
               >
-                <Shield className="mr-2 h-4 w-4" />
+                <Shield />
                 Assign Assistant
               </Button>
             )}
@@ -294,7 +296,7 @@ const CourseDetails = () => {
               className="w-full h-15 border-dashed"
               onClick={() => setAssignType("add-student")}
             >
-              <UserPlus className="mr-2 h-4 w-4" />
+              <UserPlus />
               Add Student
             </Button>
           </div>
@@ -306,7 +308,7 @@ const CourseDetails = () => {
         <div className="p-2 border-b bg-primary text-primary-foreground">
           <h3 className="text-xl font-semibold">Assign Student List</h3>
         </div>
-        <div className="p-0">
+        <div>
           <Table>
             <TableHeader>
               <TableRow>
@@ -362,6 +364,11 @@ const CourseDetails = () => {
             </TableBody>
           </Table>
         </div>
+      </div>
+
+      {/* Tabular Report */}
+      <div className="mt-6">
+        <CourseTabularReport courseId={course._id} />
       </div>
 
       {/* Modals */}

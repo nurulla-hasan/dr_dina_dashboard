@@ -78,6 +78,14 @@ const courseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.course],
     }),
+
+    getTabularReport: builder.query({
+      query: (courseId) => ({
+        url: `/report/tabular-report/${courseId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.course],
+    }),
     
   }),
 });
@@ -91,4 +99,5 @@ export const {
   useRemoveStudentMutation,
   useDeleteCourseMutation,
   useGetAllCoursesQuery,
+  useGetTabularReportQuery,
 } = courseApi;
