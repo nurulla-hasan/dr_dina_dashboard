@@ -18,12 +18,20 @@ import { getInitials } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMyProfileQuery } from "@/redux/feature/auth/authApis";
 import type { Admin } from "@/types/admin.type";
+import { useGetMyNotificationsQuery } from "@/redux/feature/notification/notificationApi";
+import type { TNotification } from "@/types/notification.type";
 
 const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   const { setTheme, theme } = useTheme();
   const dispatch = useAppDispatch();
   const { data: profileData, isLoading } = useMyProfileQuery(undefined);
+  const { data: notificationsData } = useGetMyNotificationsQuery(undefined, {
+    pollingInterval: 30000, // Poll every 30 seconds
+  });
   const admin: Admin | undefined = profileData?.data;
+
+  const notifications = notificationsData?.data?.notifications || [];
+  const unreadCount = notifications.filter((n: TNotification) => !n.isRead).length;
 
   const handleLogout = () => {
     dispatch(Logout());
@@ -55,7 +63,11 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
               className="rounded-full text-primary dark:text-primary-foreground relative"
             >
               <Bell />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border-primary"></span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full border-2 border-background flex items-center justify-center text-[10px] font-bold text-white">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
             </Button>
           </Link>
 

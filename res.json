@@ -1,172 +1,114 @@
 {
     "success": true,
-    "message": "Courses retrieved",
+    "message": "Notifications retrieved successfully",
     "statusCode": 200,
     "data": {
-        "meta": {
+        "notifications": [
+            {
+                "_id": "6992fcb47d24bef451b01a76",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Ayat BD has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-16T11:17:08.784Z",
+                "updatedAt": "2026-02-16T11:17:08.784Z",
+                "__v": 0
+            },
+            {
+                "_id": "6992ec31958249244b3509dd",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Golap Hasan has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-16T10:06:41.434Z",
+                "updatedAt": "2026-02-16T10:06:41.434Z",
+                "__v": 0
+            },
+            {
+                "_id": "69929dad736809b04fda47ce",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Azmir S has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-16T04:31:41.879Z",
+                "updatedAt": "2026-02-16T04:31:41.879Z",
+                "__v": 0
+            },
+            {
+                "_id": "69918a355c764119a79a418c",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Azmir S has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-15T08:56:21.004Z",
+                "updatedAt": "2026-02-15T08:56:21.004Z",
+                "__v": 0
+            },
+            {
+                "_id": "699189c25c764119a79a4182",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Azmir S has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-15T08:54:26.684Z",
+                "updatedAt": "2026-02-15T08:54:26.684Z",
+                "__v": 0
+            },
+            {
+                "_id": "699187e65c764119a79a4178",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Azmir S has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-15T08:46:30.597Z",
+                "updatedAt": "2026-02-15T08:46:30.597Z",
+                "__v": 0
+            },
+            {
+                "_id": "699183cd9f960c807f8c66a9",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Azmir S has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-15T08:29:01.868Z",
+                "updatedAt": "2026-02-15T08:29:01.868Z",
+                "__v": 0
+            },
+            {
+                "_id": "699183369f960c807f8c669d",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "Rayhan S has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-15T08:26:30.227Z",
+                "updatedAt": "2026-02-15T08:26:30.227Z",
+                "__v": 0
+            },
+            {
+                "_id": "69916a05a4e70f548d7c1864",
+                "user": "6990607976afcd06167981b8",
+                "title": "New User Registered! 👤",
+                "message": "admin admin has just joined El-afrik.",
+                "type": "general",
+                "isRead": false,
+                "createdAt": "2026-02-15T06:39:01.498Z",
+                "updatedAt": "2026-02-15T06:39:01.498Z",
+                "__v": 0
+            }
+        ],
+        "pagination": {
             "page": 1,
             "limit": 10,
-            "total": 6,
-            "totalPage": 1
-        },
-        "result": [
-            {
-                "_id": "69919e70e97ff9d28faa4f49",
-                "className": "Grade 9",
-                "subjectName": "Biology",
-                "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771150969/el-afrik/nncwdnx4q7yxbknoae14.png",
-                "status": "Pending",
-                "students": [],
-                "totalEnrolled": 0,
-                "createdAt": "2026-02-15T10:22:40.984Z",
-                "updatedAt": "2026-02-15T10:22:40.984Z"
-            },
-            {
-                "_id": "69916c049f960c807f8c6690",
-                "className": "Grade 10",
-                "subjectName": "Mathematics",
-                "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771138060/el-afrik/nclb5isoh4sxeqxinbkh.png",
-                "status": "Pending",
-                "teacher": null,
-                "assistant": null,
-                "students": [],
-                "totalEnrolled": 0,
-                "createdAt": "2026-02-15T06:47:32.699Z",
-                "updatedAt": "2026-02-15T06:47:32.699Z"
-            },
-            {
-                "_id": "69916c189f960c807f8c6694",
-                "className": "Grade 10",
-                "subjectName": "Mathematics",
-                "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771138080/el-afrik/s1zpufzaz0th55jhrdlp.png",
-                "status": "Pending",
-                "students": [],
-                "totalEnrolled": 0,
-                "createdAt": "2026-02-15T06:47:52.352Z",
-                "updatedAt": "2026-02-15T06:47:52.352Z"
-            },
-            {
-                "_id": "69918b0e5c764119a79a4191",
-                "className": "Grade 11",
-                "subjectName": "Physics",
-                "status": "active",
-                "students": [
-                    {
-                        "verification": {
-                            "code": null,
-                            "expireDate": null
-                        },
-                        "_id": "69918a0d5c764119a79a4187",
-                        "firstName": "Azmir",
-                        "lastName": "S",
-                        "fullName": "Azmir S",
-                        "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771145749/el-afrik/tjmopnsmhi8pdehvsfrn.png",
-                        "email": "damec38830@manupay.com",
-                        "contact": "+8801609537568",
-                        "location": "dhaka",
-                        "dob": "2012-12-04T18:00:00.000Z",
-                        "status": "in-progress",
-                        "role": "student",
-                        "fcmToken": "adfsadfsdfsadfsdf",
-                        "isOtpVerified": true,
-                        "createdAt": "2026-02-15T08:55:41.194Z",
-                        "updatedAt": "2026-02-16T11:35:04.496Z",
-                        "__v": 0
-                    },
-                    {
-                        "verification": {
-                            "code": null,
-                            "expireDate": null
-                        },
-                        "_id": "69929d8b736809b04fda47c9",
-                        "firstName": "Rayhan",
-                        "lastName": "Islam",
-                        "fullName": "Rayhan Islam",
-                        "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771217823/el-afrik/n2nw4u4kayisohnrhdui.png",
-                        "email": "voyejid527@homuno.com",
-                        "contact": "+8801609537568",
-                        "status": "in-progress",
-                        "role": "student",
-                        "fcmToken": "adfsadfsdfsadfsdf",
-                        "isOtpVerified": true,
-                        "createdAt": "2026-02-16T04:31:07.565Z",
-                        "updatedAt": "2026-02-16T11:20:04.641Z",
-                        "__v": 0,
-                        "dob": "2000-03-08T18:00:00.000Z",
-                        "about": "I am a student",
-                        "gender": "male"
-                    }
-                ],
-                "totalEnrolled": 4,
-                "createdAt": "2026-02-15T08:59:58.558Z",
-                "updatedAt": "2026-02-16T05:39:47.903Z",
-                "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771147176/el-afrik/isy3zkutgyryzrsag7b7.png",
-                "teacher": {
-                    "verification": {
-                        "code": null,
-                        "expireDate": null
-                    },
-                    "_id": "699183139f960c807f8c6698",
-                    "firstName": "Rayhan",
-                    "lastName": "S",
-                    "fullName": "Rayhan S",
-                    "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771143963/el-afrik/ixaaysr2d822oh7x0wob.png",
-                    "email": "raihanshorker56@gmail.com",
-                    "contact": "+8801609537568",
-                    "location": "dhaka",
-                    "dob": "2012-12-04T18:00:00.000Z",
-                    "status": "in-progress",
-                    "role": "teacher",
-                    "fcmToken": "adfsadfsdfsadfsdf",
-                    "isOtpVerified": true,
-                    "createdAt": "2026-02-15T08:25:55.439Z",
-                    "updatedAt": "2026-02-16T05:26:16.124Z",
-                    "__v": 0
-                },
-                "assistant": {
-                    "verification": {
-                        "code": null,
-                        "expireDate": null
-                    },
-                    "_id": "699183b19f960c807f8c66a4",
-                    "firstName": "Azmir",
-                    "lastName": "S",
-                    "fullName": "Azmir S",
-                    "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771144121/el-afrik/w2fwoeizx0sbpa1qvoyg.png",
-                    "email": "azmir.azamkhan@gmail.com",
-                    "contact": "+8801609537568",
-                    "location": "dhaka",
-                    "dob": "2012-12-04T18:00:00.000Z",
-                    "status": "in-progress",
-                    "role": "assistant",
-                    "fcmToken": "kdbcbfdfkjcdhskljoidj",
-                    "isOtpVerified": true,
-                    "createdAt": "2026-02-15T08:28:33.186Z",
-                    "updatedAt": "2026-02-15T08:29:01.712Z",
-                    "__v": 0
-                }
-            },
-            {
-                "_id": "69918f3ab172344d38e55d57",
-                "className": "Grade 9",
-                "subjectName": "Physics",
-                "status": "Pending",
-                "students": [],
-                "totalEnrolled": 0,
-                "createdAt": "2026-02-15T09:17:46.911Z",
-                "updatedAt": "2026-02-15T09:17:46.911Z"
-            },
-            {
-                "_id": "69918f6ab172344d38e55d5a",
-                "className": "Grade 9",
-                "subjectName": "Physics",
-                "image": "https://res.cloudinary.com/da1uxchgo/image/upload/v1771147122/el-afrik/cox4hkj3d61gzgkm8wi1.png",
-                "status": "Pending",
-                "students": [],
-                "totalEnrolled": 0,
-                "createdAt": "2026-02-15T09:18:34.168Z",
-                "updatedAt": "2026-02-15T09:18:34.168Z"
-            }
-        ]
+            "total": 9,
+            "totalPages": 1
+        }
     }
 }

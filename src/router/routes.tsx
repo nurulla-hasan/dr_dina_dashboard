@@ -16,6 +16,7 @@ const FAQ = lazy(() => import("@/app/settings/faq/Faq"));
 const Dashboard = lazy(() => import("@/app/dashboard/Dashboard"));
 const Users = lazy(() => import("@/app/management/users/Users"));
 const Courses = lazy(() => import("@/app/management/courses/Courses"));
+const CourseDetails = lazy(() => import("@/app/management/courses/CourseDetails"));
 const Notifications = lazy(() => import("@/app/notifications/Notifications"));
 const Login = lazy(() => import("@/app/auth/Login"));
 const ForgotPassword = lazy(() => import("@/app/auth/ForgotPassword"));
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
             // Management
             { path: "users", element: <Users /> },
             { path: "courses", element: <Courses /> },
+            { path: "courses/:id", element: <CourseDetails /> },
             { path: "notifications", element: <Notifications /> },
             // Settings
             { path: "settings/profile", element: <Profile /> },

@@ -64,7 +64,7 @@ export const AssignUserModal = ({
     {
       role: queryRole,
       searchTerm: search,
-      limit: 2, // Fetch enough users
+      limit: 100, // Fetch enough users
     },
     { skip: !shouldFetch }
   );
@@ -267,6 +267,7 @@ export const AssignUserModal = ({
             onClick={handleConfirm}
             disabled={!selectedUser || isLoading}
             loading={isLoading}
+            loadingText="Confirming..."
           >
             Confirm
           </Button>

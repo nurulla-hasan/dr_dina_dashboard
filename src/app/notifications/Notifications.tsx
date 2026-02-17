@@ -1,53 +1,17 @@
 import PageLayout from "@/components/common/page-layout";
 import PageHeader from "@/components/ui/custom/page-header";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bell, CheckCircle2, Info, AlertTriangle, Clock, Trash2 } from "lucide-react";
+import { CheckCircle2, Info, AlertTriangle, Clock, CheckCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-
-const notifications = [
-  {
-    id: 1,
-    title: "New Trainer Registration",
-    description: "A new trainer named 'Sarah Connor' has registered and is waiting for approval.",
-    time: "2 minutes ago",
-    type: "info",
-    isRead: false,
-  },
-  {
-    id: 2,
-    title: "Subscription Renewal",
-    description: "User 'John Doe' has successfully renewed their premium subscription.",
-    time: "1 hour ago",
-    type: "success",
-    isRead: false,
-  },
-  {
-    id: 3,
-    title: "System Alert",
-    description: "The database backup process was completed with minor warnings.",
-    time: "5 hours ago",
-    type: "warning",
-    isRead: true,
-  },
-  {
-    id: 4,
-    title: "Support Ticket Update",
-    description: "Ticket #1234 has been updated by the support team.",
-    time: "Yesterday",
-    type: "info",
-    isRead: true,
-  },
-  {
-    id: 5,
-    title: "Security Warning",
-    description: "Multiple failed login attempts detected from a new IP address.",
-    time: "2 days ago",
-    type: "error",
-    isRead: true,
-  },
-];
+import { cn, ErrorToast, formatDate, SuccessToast } from "@/lib/utils";
+import {
+  useGetMyNotificationsQuery,
+  useMarkAllAsReadMutation,
+  useMarkAsReadMutation,
+} from "@/redux/feature/notification/notificationApi";
+import type { TNotification } from "@/types/notification.type";
+import type { TError } from "@/types/global.types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const getIcon = (type: string) => {
   switch (type) {
@@ -63,80 +27,139 @@ const getIcon = (type: string) => {
 };
 
 const Notifications = () => {
+  const { data, isLoading } = useGetMyNotificationsQuery(undefined);
+  const [markAllAsRead, { isLoading: isMarkingAll }] = useMarkAllAsReadMutation();
+  const [markAsRead, { isLoading: isMarking }] = useMarkAsReadMutation();
+
+  const notifications = data?.data?.notifications || [];
+  const unreadCount = notifications.filter((n: TNotification) => !n.isRead).length;
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      const res = await markAllAsRead(undefined).unwrap();
+      if (res.success) {
+        SuccessToast(res.message || "All notifications marked as read");
+      }
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.data?.message || "Failed to mark all as read");
+    }
+  };
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      const res = await markAsRead(id).unwrap();
+      if (res.success) {
+        SuccessToast(res.message || "Notification marked as read");
+      }
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.data?.message || "Failed to mark as read");
+    }
+  };
+
   return (
     <PageLayout>
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <PageHeader title="Notifications" description="Manage and view your notifications." />
+          <PageHeader
+            title="Notifications"
+            description="Manage and view your notifications."
+          />
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-2">
-              <CheckCircle2 className="h-4 w-4" />
-              Mark all as read
-            </Button>
-            <Button variant="destructive" size="sm" className="gap-2">
-              <Trash2 className="h-4 w-4" />
-              Clear all
-            </Button>
+            {unreadCount > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2"
+                onClick={handleMarkAllAsRead}
+                disabled={isMarkingAll}
+              >
+                <CheckCheck className="h-4 w-4" />
+                Mark all as read
+              </Button>
+            )}
           </div>
         </div>
 
         <div className="space-y-3">
-          {notifications.map((notification) => (
-            <Card 
-              key={notification.id} 
-              className={cn(
-                "border-none shadow-sm transition-all duration-200 hover:shadow-md",
-                !notification.isRead ? "bg-primary/5 ring-1 ring-primary/10" : "bg-background/50"
-              )}
-            >
-              <CardContent className="p-4 flex gap-4">
-                <div className={cn(
-                  "p-2 rounded-full shrink-0 h-fit",
-                  !notification.isRead ? "bg-background shadow-sm" : "bg-muted/50"
-                )}>
-                  {getIcon(notification.type)}
-                </div>
-                
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className={cn(
-                        "font-semibold text-sm md:text-base",
-                        !notification.isRead ? "text-foreground" : "text-muted-foreground"
-                      )}>
-                        {notification.title}
-                      </h3>
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <Card key={i} className="border-none shadow-sm">
+                <CardContent className="p-4 flex gap-4">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-3 w-1/2" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : notifications.length > 0 ? (
+            notifications.map((notification: TNotification) => (
+              <Card
+                key={notification._id}
+                className={cn(
+                  "border-none shadow-sm transition-all duration-200 hover:shadow-md",
+                  !notification.isRead
+                    ? "bg-primary/5 ring-1 ring-primary/10"
+                    : "bg-background/50"
+                )}
+              >
+                <CardContent className="flex gap-4">
+                  <div
+                    className={cn(
+                      "p-2 rounded-full shrink-0 h-fit",
+                      !notification.isRead
+                        ? "bg-background shadow-sm"
+                        : "bg-muted/50"
+                    )}
+                  >
+                    {getIcon(notification.type)}
+                  </div>
+
+                  <div className="flex-1 space-y-1">
+                    <div className="flex justify-between items-start">
+                      <h4
+                        className={cn(
+                          "text-sm font-medium",
+                          !notification.isRead
+                            ? "text-foreground font-semibold"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {notification.message}
+                      </h4>
                       {!notification.isRead && (
-                        <Badge variant="default" className="h-2 w-2 rounded-full p-0 bg-primary" />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 rounded-full hover:bg-primary/10 hover:text-primary -mt-1 -mr-1"
+                          onClick={() => handleMarkAsRead(notification._id)}
+                          disabled={isMarking}
+                          title="Mark as read"
+                        >
+                          <CheckCircle2 className="h-3 w-3" />
+                        </Button>
                       )}
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                       <Clock className="h-3 w-3" />
-                      {notification.time}
+                      {formatDate(notification.createdAt)}
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {notification.description}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <div className="text-center py-12 text-muted-foreground">
+              <div className="bg-muted/50 rounded-full h-12 w-12 flex items-center justify-center mx-auto mb-4">
+                <Info className="h-6 w-6" />
+              </div>
+              <p>No notifications found</p>
+            </div>
+          )}
         </div>
-        
-        {notifications.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-            <div className="p-6 bg-muted rounded-full">
-              <Bell className="h-12 w-12 text-muted-foreground" />
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-xl font-semibold">No notifications yet</h3>
-              <p className="text-muted-foreground max-w-xs">
-                When you receive notifications, they will appear here.
-              </p>
-            </div>
-          </div>
-        )}
       </div>
     </PageLayout>
   );

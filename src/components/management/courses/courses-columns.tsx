@@ -1,5 +1,6 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -12,16 +13,16 @@ export const coursesColumns: ColumnDef<TCourse>[] = [
     accessorKey: "className",
     header: "Class",
     cell: ({ row }) => (
-      <span className="text-sm font-medium text-foreground">
+      <Link to={`/courses/${row.original._id}`} className="text-sm font-medium text-foreground hover:underline">
         {row.original.className}
-      </span>
+      </Link>
     ),
   },
   {
     accessorKey: "subjectName",
     header: "Subject",
     cell: ({ row }) => (
-      <div className="flex items-center gap-3">
+      <Link to={`/courses/${row.original._id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
         <Avatar>
           <AvatarImage src={row.original.image} alt={row.original.subjectName} />
           <AvatarFallback>{row.original.subjectName.charAt(0)}</AvatarFallback>
@@ -29,7 +30,7 @@ export const coursesColumns: ColumnDef<TCourse>[] = [
         <span className="text-sm font-medium text-foreground">
           {row.original.subjectName}
         </span>
-      </div>
+      </Link>
     ),
   },
   {
