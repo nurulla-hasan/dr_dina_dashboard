@@ -3,6 +3,7 @@ export const tagTypes = {
   admin: "Admin",
   course: "Course",
   notification: "Notification",
+  faq: "FAQ",
   // Add other tags here as needed
 };
 

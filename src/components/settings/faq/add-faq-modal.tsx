@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { ModalWrapper } from "@/components/ui/custom/modal-wrapper";
 import {
@@ -16,11 +15,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type FAQ } from "./faq-columns";
+import type { TFaq } from "@/types/faq.type";
+import {
+  useCreateFaqMutation,
+  useUpdateFaqMutation,
+} from "@/redux/feature/faq/faqApis";
+import { ErrorToast, SuccessToast } from "@/lib/utils";
+import type { TError } from "@/types/global.types";
 
 interface AddFAQModalProps {
   mode?: "add" | "edit";
-  faq?: FAQ;
+  faq?: TFaq;
   children?: React.ReactNode;
 }
 
@@ -31,21 +36,56 @@ type FAQFormValues = {
 
 const AddFAQModal = ({ mode = "add", faq, children }: AddFAQModalProps) => {
   const [open, setOpen] = useState(false);
+  const [createFaq, { isLoading: isCreating }] = useCreateFaqMutation();
+  const [updateFaq, { isLoading: isUpdating }] = useUpdateFaqMutation();
 
   const form = useForm<FAQFormValues>({
     defaultValues: {
-      question: faq?.question || "",
-      answer: faq?.answer || "",
+      question: faq?.Ques || "",
+      answer: faq?.Answere || "",
     },
   });
 
-  const onSubmit = (data: FAQFormValues) => {
-    console.log(data);
-    setOpen(false);
-    if (mode === "add") {
-      form.reset();
+  useEffect(() => {
+    if (open && faq) {
+      form.reset({
+        question: faq.Ques,
+        answer: faq.Answere,
+      });
+    } else if (open && mode === "add") {
+      form.reset({
+        question: "",
+        answer: "",
+      });
+    }
+  }, [open, faq, mode, form]);
+
+  const onSubmit = async (data: FAQFormValues) => {
+    try {
+      const payload = {
+        Ques: data.question,
+        Answere: data.answer,
+      };
+
+      if (mode === "add") {
+        const res = await createFaq(payload).unwrap();
+        SuccessToast(res.message || "FAQ created successfully");
+        form.reset();
+      } else {
+        const res = await updateFaq({
+          id: faq?._id,
+          data: payload,
+        }).unwrap();
+        SuccessToast(res.message || "FAQ updated successfully");
+      }
+      setOpen(false);
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.data?.message || "Something went wrong");
     }
   };
+
+  const isLoading = isCreating || isUpdating;
 
   return (
     <ModalWrapper
@@ -96,8 +136,8 @@ const AddFAQModal = ({ mode = "add", faq, children }: AddFAQModalProps) => {
               )}
             />
             <div className="pt-4">
-              <Button type="submit" className="w-full">
-                {mode === "add" ? "Add FAQ" : "Save Changes"}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Saving..." : mode === "add" ? "Add FAQ" : "Save Changes"}
               </Button>
             </div>
           </form>

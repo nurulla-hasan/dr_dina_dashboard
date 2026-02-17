@@ -1,18 +1,11 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { Trash2, Edit } from "lucide-react";
+import type { TFaq } from "@/types/faq.type";
+import ActionCell from "./faq-action-cell";
 
-import { Button } from "@/components/ui/button";
-import AddFAQModal from "./add-faq-modal";
-export type FAQ = {
-  id: number;
-  question: string;
-  answer: string;
-};
-
-export const faqColumns: ColumnDef<FAQ>[] = [
+export const faqColumns: ColumnDef<TFaq>[] = [
   {
     header: "Serial No.",
-    accessorKey: "id",
+    accessorKey: "_id",
     cell: ({ row }) => (
       <span className="text-sm font-medium text-foreground">
         {row.index + 1}
@@ -22,47 +15,26 @@ export const faqColumns: ColumnDef<FAQ>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "question",
+    accessorKey: "Ques",
     header: "Question",
     cell: ({ row }) => (
       <span className="text-sm font-medium text-foreground">
-        {row.original.question}
+        {row.original.Ques}
       </span>
     ),
   },
   {
-    accessorKey: "answer",
+    accessorKey: "Answere",
     header: "Answer",
     cell: ({ row }) => (
       <span className="text-sm text-muted-foreground line-clamp-2 max-w-100">
-        {row.original.answer}
+        {row.original.Answere}
       </span>
     ),
   },
   {
     id: "actions",
-    header: () => <div className="text-right pr-8">Actions</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center justify-end gap-2 pr-4">
-          <AddFAQModal mode="edit" faq={row.original}>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-primary"
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
-          </AddFAQModal>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-destructive"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
+    header: () => <div className="text-right pr-2">Actions</div>,
+    cell: ({ row }) => <ActionCell row={row} />,
   },
 ];
