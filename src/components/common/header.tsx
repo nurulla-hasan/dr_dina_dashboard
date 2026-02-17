@@ -52,10 +52,10 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
             <Button
               variant="outline"
               size="icon-sm"
-              className="rounded-full text-primary dark:text-primary-foreground"
+              className="rounded-full text-primary dark:text-primary-foreground relative"
             >
               <Bell />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border-2 border-primary"></span>
+              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border-primary"></span>
             </Button>
           </Link>
 

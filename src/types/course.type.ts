@@ -6,7 +6,7 @@ export type TCourse = {
   className: string;
   subjectName: string;
   image?: string;
-  status: "Pending" | "active" | "inactive";
+  status: "Active" | "Pending" | "Complete";
   teacher?: TUser | null;
   assistant?: TUser | null;
   students: TUser[];

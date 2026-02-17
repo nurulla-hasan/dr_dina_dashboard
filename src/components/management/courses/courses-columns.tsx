@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import type { TCourse } from "@/types/course.type";
 import { formatDate } from "@/lib/utils";
+import { CourseAction } from "./course-action";
 
 export const coursesColumns: ColumnDef<TCourse>[] = [
   {
@@ -46,9 +47,9 @@ export const coursesColumns: ColumnDef<TCourse>[] = [
     cell: ({ row }) => {
       const status = row.original.status;
       let variant = "default";
-      if (status === "active") variant = "success";
-      if (status === "inactive") variant = "destructive";
+      if (status === "Active") variant = "success";
       if (status === "Pending") variant = "warning";
+      if (status === "Complete") variant = "secondary";
 
       return (
         <Badge variant={variant as any} className="rounded-full px-3 py-1 capitalize">
@@ -64,6 +65,15 @@ export const coursesColumns: ColumnDef<TCourse>[] = [
       <span className="text-sm text-muted-foreground">
         {formatDate(row.original.createdAt)}
       </span>
+    ),
+  },
+  {
+    id: "actions",
+    header: () => <div className="text-right">Actions</div>,
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <CourseAction course={row.original} />
+      </div>
     ),
   },
 ];

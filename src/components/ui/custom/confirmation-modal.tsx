@@ -41,16 +41,18 @@ export function ConfirmationModal({
 }: ConfirmationModalProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogTrigger asChild>
-        {trigger || (
-          <Button
-            variant="ghost"
-            size="icon"
-          >
-            <Trash2 />
-          </Button>
-        )}
-      </AlertDialogTrigger>
+      {trigger !== null && (
+        <AlertDialogTrigger asChild>
+          {trigger || (
+            <Button
+              variant="ghost"
+              size="icon"
+            >
+              <Trash2 />
+            </Button>
+          )}
+        </AlertDialogTrigger>
+      )}
 
       <AlertDialogContent>
         <AlertDialogHeader>
