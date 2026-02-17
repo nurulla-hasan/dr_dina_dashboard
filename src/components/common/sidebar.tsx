@@ -19,6 +19,7 @@ import {
   User,
   Handshake,
   FileText,
+  Info,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
@@ -41,6 +42,7 @@ const SETTINGS_SUB_ITEMS = [
   { name: "Profile", icon: UserRoundPen, href: "/settings/profile" },
   { name: "Privacy Policy", icon: BadgeInfo, href: "/settings/privacy" },
   { name: "Terms", icon: ReceiptText, href: "/settings/terms" },
+  { name: "About Us", icon: Info, href: "/settings/about" },
   { name: "FAQ", icon: MessageCircleQuestion, href: "/settings/faq" },
 ];
 

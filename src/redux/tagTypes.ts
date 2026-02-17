@@ -4,6 +4,9 @@ export const tagTypes = {
   course: "Course",
   notification: "Notification",
   faq: "FAQ",
+  privacy: "Privacy",
+  terms: "Terms",
+  about: "About",
   // Add other tags here as needed
 };
 

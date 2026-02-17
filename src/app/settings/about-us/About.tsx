@@ -1,54 +1,59 @@
 import PageLayout from "@/components/common/page-layout";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
-  // FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import TiptapEditor from "@/components/ui/custom/tiptap-editor";
-// import { ErrorToast, SuccessToast } from "@/lib/utils";
+import { ErrorToast, SuccessToast } from "@/lib/utils";
 import { Save } from "lucide-react";
-import PageHeader from "../../../components/ui/custom/page-header";
+import PageHeader from "@/components/ui/custom/page-header";
+import {
+  useGetAboutUsQuery,
+  useUpdateAboutUsMutation,
+} from "@/redux/feature/settings/settingsApis";
+import type { TError } from "@/types/global.types";
 
 type FormValues = {
-  title: string;
   content: string;
 };
 
 const About = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: aboutData, isLoading: isFetching } = useGetAboutUsQuery(undefined);
+  const [updateAboutUs, { isLoading: isSubmitting }] =
+    useUpdateAboutUsMutation();
 
   const form = useForm<FormValues>({
     defaultValues: {
-      title: "About Mike Fire Merritt",
       content: "",
     },
   });
 
+  useEffect(() => {
+    if (aboutData?.data?.aboutUs) {
+      form.reset({
+        content: aboutData.data.aboutUs,
+      });
+    }
+  }, [aboutData, form]);
+
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
     try {
-      setIsSubmitting(true);
-      // const slug = generateSlug(data.title || "about-us");
-      // await upsertPage({
-      //   slug,
-      //   title: data.title,
-      //   content: data.content,
-      // });
-      // SuccessToast("About page saved successfully");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      // ErrorToast("Failed to save About page");
-    } finally {
-      setIsSubmitting(false);
+      const res = await updateAboutUs({
+        aboutUs: data.content,
+      }).unwrap();
+      SuccessToast(res.message || "About Us saved successfully");
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.data?.message || "Failed to save About Us");
     }
   };
+
   return (
     <PageLayout>
       <PageHeader title="About Us" description="Manage the About Us page content" />
@@ -58,19 +63,25 @@ const About = () => {
           <Card className="p-0 mb-4">
             <CardContent className="p-0">
               <div className="bg-card p-3 rounded-xl border shadow-sm">
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem className="space-y-0">
-                      <TiptapEditor
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                      />
-                      <FormMessage className="p-4" />
-                    </FormItem>
-                  )}
-                />
+                {isFetching ? (
+                  <div className="h-150 flex items-center justify-center text-muted-foreground">
+                    Loading content...
+                  </div>
+                ) : (
+                  <FormField
+                    control={form.control}
+                    name="content"
+                    render={({ field }) => (
+                      <FormItem className="space-y-0">
+                        <TiptapEditor
+                          value={field.value || ""}
+                          onChange={field.onChange}
+                        />
+                        <FormMessage className="p-4" />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
             </CardContent>
           </Card>
@@ -78,10 +89,10 @@ const About = () => {
           <div className="flex justify-end">
             <Button
               type="submit"
-              loadingText="Saving..."
-              loading={isSubmitting}
+              disabled={isSubmitting || isFetching}
             >
-              <Save /> Save
+              <Save className="mr-2 h-4 w-4" />
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>

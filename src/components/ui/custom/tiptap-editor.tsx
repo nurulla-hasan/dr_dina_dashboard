@@ -206,7 +206,7 @@ import {
   // Youtube as YoutubeIcon,
   // Music,
 } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -325,6 +325,12 @@ const TiptapEditor = ({ value, onChange, placeholder }: TiptapEditorProps) => {
     },
     immediatelyRender: false,
   });
+
+  useEffect(() => {
+    if (editor && value && editor.getHTML() !== value) {
+      editor.commands.setContent(value);
+    }
+  }, [editor, value]);
 
   if (!editor) {
     return null;
