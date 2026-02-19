@@ -6,14 +6,25 @@ type Stat = {
   icon: React.ElementType;
 };
 
-const items: Stat[] = [
-  { label: "Total Teacher", value: "45", icon: User },
-  { label: "Total Assistance", value: "45", icon: Handshake },
-  { label: "Total Student", value: "45", icon: Users },
-  { label: "Total Parents", value: "45", icon: ShieldCheck },
-];
+interface StatsData {
+  totalTeacher: number;
+  totalAssistant: number;
+  totalStudent: number;
+  totalParents: number;
+}
 
-const Stats = () => {
+interface StatsProps {
+  data?: StatsData;
+}
+
+const Stats = ({ data }: StatsProps) => {
+  const items: Stat[] = [
+    { label: "Total Teacher", value: data?.totalTeacher?.toString() || "0", icon: User },
+    { label: "Total Assistant", value: data?.totalAssistant?.toString() || "0", icon: Handshake },
+    { label: "Total Student", value: data?.totalStudent?.toString() || "0", icon: Users },
+    { label: "Total Parents", value: data?.totalParents?.toString() || "0", icon: ShieldCheck },
+  ];
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {items.map((s, idx) => (

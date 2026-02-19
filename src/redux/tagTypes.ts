@@ -7,6 +7,7 @@ export const tagTypes = {
   privacy: "Privacy",
   terms: "Terms",
   about: "About",
+  dashboard: "Dashboard",
   // Add other tags here as needed
 };
 
