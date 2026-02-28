@@ -9,7 +9,7 @@ const notificationApi = baseApi.injectEndpoints({
       query: (query) => {
         const params = buildQueryParams(query);
         return {
-          url: "/notification/my-notifications",
+          url: "/notification/admin-notifications",
           method: "GET",
           params: params,
         };
