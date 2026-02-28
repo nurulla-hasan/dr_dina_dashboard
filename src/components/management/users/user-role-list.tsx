@@ -23,10 +23,10 @@ export const UserRoleList = ({ role, title, description }: UserRoleListProps) =>
     filter,
     setFilter,
     setPage,
-  } = useSmartFetchHook<{ page: number; limit: number; search: string; role: string }, TUser>(
-    useGetAllUsersQuery,
-    { role }
-  );
+  } = useSmartFetchHook<
+    { page: number; limit: number; search: string; role: string; status: string },
+    TUser
+  >(useGetAllUsersQuery, { role });
 
   // Filter out the actions column
   const columns = useMemo(() => {

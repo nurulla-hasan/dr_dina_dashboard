@@ -16,7 +16,10 @@ const Users = () => {
     filter,
     setFilter,
     setPage,
-  } = useSmartFetchHook<{ page: number; limit: number; search: string }, TUser>(useGetAllUsersQuery);
+  } = useSmartFetchHook<
+    { page: number; limit: number; search: string; status: string },
+    TUser
+  >(useGetAllUsersQuery);
 
   return (
     <PageLayout>
