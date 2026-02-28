@@ -1,6 +1,6 @@
-# VitaKinetic (Dr. Dina) Admin Dashboard
+# Dr. Dina Admin Dashboard
 
-A robust and modern management dashboard for the VitaKinetic (Dr. Dina) platform, built with **React 19**, **TypeScript**, and **Vite**. This dashboard provides a comprehensive suite of tools for managing users, courses, notifications, and application settings.
+A robust and modern management dashboard for the (Dr. Dina) platform, built with **React 19**, **TypeScript**, and **Vite**. This dashboard provides a comprehensive suite of tools for managing users, courses, notifications, and application settings.
 
 ## 🚀 Live Demo
 [View Live Site](https://dr-dina-dashboard.vercel.app/)
