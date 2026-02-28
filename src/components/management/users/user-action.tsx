@@ -1,10 +1,11 @@
 
 import { useState } from "react";
-import { Ban, Trash2, CheckCircle } from "lucide-react";
+import { Ban, Trash2, CheckCircle, UserCheck } from "lucide-react";
 
 import { ConfirmationModal } from "@/components/ui/custom/confirmation-modal";
 import { Button } from "@/components/ui/button";
 import {
+  useApproveUserMutation,
   useDeleteUserMutation,
   useUpdateUserStatusMutation,
 } from "@/redux/feature/user/userApis";
@@ -19,9 +20,24 @@ interface UserActionProps {
 export const UserAction = ({ user }: UserActionProps) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isBlockOpen, setIsBlockOpen] = useState(false);
+  const [isApproveOpen, setIsApproveOpen] = useState(false);
 
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
   const [updateStatus, { isLoading: isUpdating }] = useUpdateUserStatusMutation();
+  const [approveUser, { isLoading: isApproving }] = useApproveUserMutation();
+
+  const handleApprove = async () => {
+    try {
+      const res = await approveUser(user._id).unwrap();
+      if (res.success) {
+        SuccessToast(res.message || "User approved successfully");
+        setIsApproveOpen(false);
+      }
+    } catch (err) {
+      const error = err as TError;
+      ErrorToast(error?.message || "Failed to approve user");
+    }
+  };
 
   const handleDelete = async () => {
     try {
@@ -57,9 +73,32 @@ export const UserAction = ({ user }: UserActionProps) => {
   };
 
   const isBlocked = user.status === "blocked";
+  const canApprove = (user.role === "teacher" || user.role === "assistant") && user.status === "pending";
 
   return (
     <div className="flex items-center justify-end gap-2">
+      {canApprove && (
+        <ConfirmationModal
+          open={isApproveOpen}
+          onOpenChange={setIsApproveOpen}
+          title="Approve User?"
+          description="Are you sure you want to approve this user? This will grant them full access as a teacher or assistant."
+          onConfirm={handleApprove}
+          isLoading={isApproving}
+          confirmButtonText="Approve"
+          confirmLoadingText="Approving..."
+          trigger={
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="text-green-600 hover:text-green-700 hover:bg-green-50"
+            >
+              <UserCheck />
+            </Button>
+          }
+        />
+      )}
+
       <ConfirmationModal
         open={isBlockOpen}
         onOpenChange={setIsBlockOpen}
@@ -77,7 +116,7 @@ export const UserAction = ({ user }: UserActionProps) => {
           <Button
             variant="ghost"
             size="icon-sm"
-            className={isBlocked ? "text-success hover:text-success" : "text-destructive hover:text-destructive"}
+            className={isBlocked ? "text-green-600 hover:text-green-700 hover:bg-green-50" : "text-destructive hover:text-destructive"}
           >
             {isBlocked ? <CheckCircle /> : <Ban />}
           </Button>

@@ -65,10 +65,11 @@ export const usersColumns: ColumnDef<TUser>[] = [
       let variant = "default";
       if (status === "in-progress" || status === "Approved") variant = "success";
       if (status === "blocked" || status === "Decline") variant = "destructive";
+      if (status === "pending") variant = "warning";
       
       return (
         <Badge variant={variant as any} className="rounded-full px-3 py-1 capitalize">
-          {status}
+          {status === "in-progress" ? "Active" : status}
         </Badge>
       );
     },

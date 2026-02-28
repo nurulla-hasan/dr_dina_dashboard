@@ -30,7 +30,7 @@ export const UserRoleList = ({ role, title, description }: UserRoleListProps) =>
 
   // Filter out the actions column
   const columns = useMemo(() => {
-    return usersColumns.filter((col) => col.id !== "actions");
+    return usersColumns;
   }, []);
 
   return (
