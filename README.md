@@ -1,32 +1,40 @@
-# VitaKinetic Admin Dashboard
+# VitaKinetic (Dr. Dina) Admin Dashboard
 
-A comprehensive management dashboard for VitaKinetic, built with React, TypeScript, and Vite.
+A robust and modern management dashboard for the VitaKinetic (Dr. Dina) platform, built with **React 19**, **TypeScript**, and **Vite**. This dashboard provides a comprehensive suite of tools for managing users, courses, notifications, and application settings.
 
 ## 🚀 Live Demo
-[View Live Site](https://mikefiremerritt-dashboard.vercel.app/)
+[View Live Site](https://dr-dina-dashboard.vercel.app/)
 
 ## ✨ Key Features
 
-- **Dashboard**: Visualized stats for user growth and earnings.
-- **User Management**: Manage app users, trainers, and administrators.
-- **Program & Gym Management**: Handle fitness programs and gym listings.
-- **Subscription Management**: Monitor and manage user subscriptions.
-- **Fees & Financials**: Dedicated section for managing subscription fees and referral rewards.
-- **Content Moderation**: Newsfeed moderation and review management.
-- **Support System**: Ticket management system for user queries.
-- **Settings**: Profile management and app configuration (Terms, Privacy, FAQ, etc.).
+- **📊 Dashboard**: Real-time visualization of platform statistics, including earning growth and user activity.
+- **👥 User Management**:
+  - Detailed control over **Students**, **Teachers**, **Parents**, and **Assistance** staff.
+  - Role-based user listing and filtering (Search by name/email, Status filtering).
+- **📚 Course Management**:
+  - Full CRUD operations for courses.
+  - User assignment to specific courses via interactive modals.
+  - Tabular reporting and course-specific action management.
+- **🔔 Notifications**: Centralized notification system for platform-wide alerts and updates.
+- **⚙️ Settings & Configuration**:
+  - **Profile Management**: Edit profile details and change passwords.
+  - **Content Management**: Manage FAQ, About Us, Privacy Policy, and Terms & Conditions.
+  - **Rich Text Editing**: Integrated Tiptap editor for managing dynamic content.
+- **🛡️ Authentication**: Complete auth flow including Login, Forgot Password, OTP Verification, and Reset Password.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React 18
-- **Build Tool**: Vite
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Components**: Shadcn/UI
-- **Icons**: Lucide React
-- **Tables**: TanStack Table (React Table)
-- **Forms**: React Hook Form + Zod
-- **Navigation**: React Router DOM
+- **Framework**: [React 19](https://react.dev/)
+- **State Management**: [Redux Toolkit (RTK Query)](https://redux-toolkit.js.org/)
+- **Build Tool**: [Vite 7](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Components**: [Shadcn/UI](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Tables**: [TanStack Table (React Table)](https://tanstack.com/table/latest)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+- **Navigation**: [React Router DOM 7](https://reactrouter.com/)
+- **Editor**: [Tiptap](https://tiptap.dev/)
 
 ## 📦 Installation & Setup
 
@@ -52,12 +60,19 @@ A comprehensive management dashboard for VitaKinetic, built with React, TypeScri
 
 ## 📂 Project Structure
 
-- `src/app`: Page components and route-specific logic.
-- `src/components`: Reusable UI components (Common, Management, Settings, etc.).
-- `src/layout`: Main and Auth layout wrappers.
-- `src/router`: Routing configuration.
-- `src/lib`: Utility functions.
+- `src/app`: Page components and route-specific logic (Auth, Dashboard, Management, Settings).
+- `src/components`: 
+  - `ui/`: Base Shadcn components and custom UI wrappers.
+  - `management/`: Feature-specific components for Users and Courses.
+  - `common/`: Global layout components (Header, Sidebar, PageLayout).
+- `src/redux`: Store configuration, feature slices, and RTK Query API definitions.
+- `src/hooks`: Custom React hooks (e.g., `useSmartFetchHook` for data fetching).
+- `src/layout`: Layout wrappers for protected and public routes.
+- `src/router`: Centralized routing configuration using React Router.
+- `src/schemas`: Zod validation schemas for forms.
+- `src/types`: TypeScript interfaces and types for global and feature-specific entities.
+- `src/lib`: Shared utility functions.
 
 ---
 
-Built with ❤️ for VitaKinetic.
+Built with ❤️ for  (Dr. Dina).
